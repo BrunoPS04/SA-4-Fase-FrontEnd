@@ -1,0 +1,297 @@
+.painel-container {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    width: 100%;
+    background-color: hsl(0, 0%, 80%);
+}
+
+.painel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
+    height: 45vh;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.card1,
+.card2,
+.card3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 3px 3px 0px 0px #00000025;
+}
+
+.div-renda-mensal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 100%;
+    background-color: #d9d9d9;
+
+    label {
+        font-size: 23px;
+        font-weight: 600;
+    }
+}
+
+.div-valor-renda-mensal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+
+    span {
+        font-size: 23px;
+        font-weight: 600;
+        color: #2b8293;
+    }
+}
+
+.div-despesa-mensal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 100%;
+    background-color: #d9d9d9;
+
+    label {
+        font-size: 23px;
+        font-weight: 600;
+    }
+}
+
+.div-valor-despesa-mensal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+
+    span {
+        font-size: 23px;
+        font-weight: 600;
+        color: #DB3A34;
+    }
+}
+
+.div-saldo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    width: 100%;
+    background-color: #d9d9d9;
+
+    label {
+        font-size: 23px;
+        font-weight: 600;
+    }
+}
+
+.div-valor-saldo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+
+    span {
+        font-size: 23px;
+        font-weight: 600;
+    }
+    
+}
+
+.painel-opcoes {
+    display: flex;
+    height: 20vh;
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    gap: 40px;
+    padding-left: 80px;
+    padding-right: 15px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 0px 0px #00000025;
+
+    input {
+        border: 1px solid #514e4e;
+        outline: none;
+        background-color: #d9d9d9;
+        height: 30px;
+        padding-left: 10px;
+    }
+}
+
+.opcao-descricao {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 20%;
+    padding-top: 10px;
+
+    label {
+        height: 20px;
+    }
+}
+
+.opcao-valor {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 20%;
+    padding-top: 10px;
+
+    label {
+        height: 20px;
+    }
+}
+
+.opcao-tipo {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 12%;
+    padding-top: 10px;
+    margin-right: 10px;
+    height: 100%;
+
+    label {
+        text-align: center;
+    }
+
+}
+
+.inpt-tipo {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+
+    label {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+}
+
+.opcao-categoria {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 20%;
+    padding-top: 10px;
+
+    label {
+        height: 20px;
+    }
+
+    select {
+        border: 1px solid #514e4e;
+        outline: none;
+        background-color: #d9d9d9;
+        height: 30px;
+    }
+}
+
+.div-btn-adicionar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 10%;
+
+}
+
+.btn-adicionar {
+    height: 42px;
+    width: 110px;
+    background-color: #2B9348;
+    border: 1px solid #514e4e;
+    color: #fff;
+    font-size: 15px;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.painel-movimentacoes {
+    margin: 0 auto;
+    height: 100%;
+    width: 95%;
+    background-color: #fff;
+    box-shadow: 3px 3px 0px 0px #00000025;
+}
+
+.div-label-movimentacoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10%;
+    width: 100%;
+    background-color: #d9d9d9;
+
+    label {
+        font-size: 23px;
+        font-weight: 600;
+    }
+}
+
+.div-table-movimentacoes {
+    width: 100%;
+    max-height: 300px; 
+    overflow-y: auto; 
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+tbody {
+    width: 100%;
+}
+
+tr {
+    width: 100%;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.td-acoes-btn {
+
+
+    img {
+        height: 30px;
+        width: 30px;
+        border: none;
+    }
+
+    button {
+        width: 40px;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
+}
