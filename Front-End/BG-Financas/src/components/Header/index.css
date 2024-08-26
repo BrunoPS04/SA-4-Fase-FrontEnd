@@ -44,9 +44,18 @@ header {
         font-weight: 600;
         cursor: pointer;
     }
-    img{
+    .door-exit{
+        color: #fff;
         width: 30px;
         height: 30px;
         margin-right: 10px;
     }
+}
+
+.dark-mode{
+    display: grid;
+    place-items: center;
+    height: 100%;
+    width: 100px;
+    padding-top: 4px;
 }

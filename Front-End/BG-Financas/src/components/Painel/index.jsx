@@ -7,6 +7,7 @@ function Painel() {
     const [valor, setValor] = useState('');
     const [tipo, setTipo] = useState('');
     const [categoria, setCategoria] = useState('');
+    const [data, setData] = useState('');
     const [movimentacoes, setMovimentacoes] = useState([]);
 
     const calcularValores = () => {
@@ -30,7 +31,7 @@ function Painel() {
             valor: parseFloat(valor),
             tipo,
             categoria,
-            horario: new Date().toLocaleString(),
+            data,
 
         };
 
@@ -40,6 +41,7 @@ function Painel() {
         setValor('');
         setTipo('');
         setCategoria('');
+        setData('');
 
     }
 
@@ -52,6 +54,10 @@ function Painel() {
         setMovimentacoes(novasMovimentacoes);
     }
 
+    const formatarData = (dataISO) => {
+        const [ano, mes, dia] = dataISO.split('-');
+        return `${dia}-${mes}-${ano}`;
+    };
 
     const corSaldo = saldoMesal <= 0 ? '#DB3A34' : '#2b8293';
 
@@ -147,6 +153,14 @@ function Painel() {
 
                 </div>
 
+                <div className='opcao-data'>
+
+                    <label>Data de laçamento</label>
+
+                    <input type="date" value={data} onChange={(e) => setData(e.target.value)} />
+
+                </div>
+
                 <div className='opcao-categoria'>
 
                     <label>Categoria</label>
@@ -206,13 +220,13 @@ function Painel() {
 
                         <tbody>
 
-                            {movimentacoes.slice().map(movimentacao => (
+                            {movimentacoes.slice(-5).map(movimentacao => (
 
                                 <tr key={movimentacao.id}>
 
                                     <td>{movimentacao.descricao}</td>
                                     <td>R$ {movimentacao.valor.toFixed(2)}</td>
-                                    <td>{movimentacao.horario}</td>
+                                    <td>{formatarData(movimentacao.data)}</td>
                                     <td>{movimentacao.tipo}</td>
                                     <td>{movimentacao.categoria}</td>
 

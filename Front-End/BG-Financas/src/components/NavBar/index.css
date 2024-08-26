@@ -1,9 +1,10 @@
 .navbar-container {
-  background-color: #fff;
+  background-color: var(--background_nav_bar);
+  transition: all 0.3s ease-in-out;
 }
 
 a {
-  color: #000;
+  color: var( --color_labels_all);
   text-decoration: none;
   transition: 0.3s;
 }
@@ -37,7 +38,7 @@ nav {
 .mobile-menu div {
   width: 32px;
   height: 2px;
-  background-color: #000;
+  background-color: var(--color_lines);
 }
 
 .nav-list {
@@ -55,14 +56,23 @@ nav {
   font-size: 20px;
 }
 
+.icon-home,
+.icon-chart,
+.icon-user-pen {
+  color: var(--color_icons);
+  height: 25px;
+  width: 25px;
+  margin-right: 8px;
+}
+
 .nav-list img {
   height: 30px;
   width: 30px;
   margin-right: 5px;
 }
 
-.line-botton{
-  border-bottom: 1px solid #000;
+.line-botton {
+  border-bottom: 1px solid var(--color_line_bottom);
   width: 100%;
 }
 
@@ -74,6 +84,9 @@ nav {
   margin-bottom: 50px;
   font-size: 25px;
   font-weight: 600;
+  label,span{
+    color: var(--color_span_usuario);
+  }
 }
 
 .nav-list.open {
