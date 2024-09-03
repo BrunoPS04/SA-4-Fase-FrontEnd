@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+.tela-login-container {
+    width: 100%;
+    height: 100vh;
+    background-color: #d9d9d9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div-esquerda {
+
+    width: 50%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative; 
+}
+
+.div-esquerda>h1 {
+    font-size: 3vw;
+    color: #2B9348;
+}
+
+.img {
+    width: 30vw;
+}
+
+.div-direita {
+    width: 50vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Para posicionamento absoluto do card */
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+/* Classes para transição */
+.slide-out {
+    transform: translateX(100%); /* Desliza para fora da tela à direita */
+    opacity: 0;
+}
+
+.slide-in {
+    transform: translateX(0); /* Retorna para a posição original */
+    opacity: 1;
+}
+
+@media only screen and (max-width: 950px) {
+
+    .card {
+        width: 85%;
+    }
+
+}
+
+@media only screen and (max-width: 600px) {
+
+    .container {
+        flex-direction: column;
+    }
+
+    .div-esquerda>h1 {
+        display: none;
+    }
+
+    .div-esquerda {
+        width: 100%;
+        height: auto;
+    }
+
+    .div-direita {
+        width: 100%;
+        height: auto;
+    }
+
+    .img {
+        width: 50vh;
+    }
+
+    .card {
+        width: 90%;
+    }
+}

@@ -5,6 +5,7 @@ import { faMoon,faSun } from '@fortawesome/free-solid-svg-icons'
 
 function DarkMode() {
     const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isRotated, setIsRotated] = useState(false);
 
     const setDarkMode = () => {
         document.querySelector("body").setAttribute('data-theme', 'dark');
@@ -21,12 +22,14 @@ function DarkMode() {
             setDarkMode();
         }
         setIsDarkMode(!isDarkMode);
+        setIsRotated(true);
+        setTimeout(() => setIsRotated(false), 70);
     };
 
     return (
         <div className="dark-mode">
             <button onClick={toggleTheme} className="dark-mode-button">
-                <FontAwesomeIcon className='icons-sun-moon' icon={isDarkMode ? faSun : faMoon}/>
+                <FontAwesomeIcon className={`icons-sun-moon ${isRotated ? 'rotate' : ''}`} icon={isDarkMode ? faSun : faMoon} />
             </button>
         </div>
     );
