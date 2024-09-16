@@ -1,55 +1,52 @@
-import React from 'react'
-import { useState } from 'react'
-import "./index.css"
-import CardLogin from '../CardLogin'
-import CardCadastro from '../CardCadastro'
+import React, { useState } from 'react';
+import "./index.css";
+import CardLogin from '../CardLogin';
+import CardCadastro from '../CardCadastro';
 
 function TelaLogin() {
+  const [isLogin, setIsLogin] = useState(true);
+  const [transitionClass, setTransitionClass] = useState('');
 
-    const [isLogin, setIsLogin] = useState(true);
-    const [transitionClass, setTransitionClass] = useState('');
+  const toggleForm = () => {
+    setTransitionClass('slide-out');
 
-    const toggleForm = () => {
+    setTimeout(() => {
+      setIsLogin(!isLogin);
+      setTransitionClass('slide-in');
+    }, 500);
 
-        setTransitionClass('slide-out');
+    setTimeout(() => {
+      setTransitionClass('');
+    }, 1000);
+  };
 
-        setTimeout(() => {
+  const handleCadastroComplete = () => {
+    setTransitionClass('slide-out');
+    setTimeout(() => {
+      setIsLogin(true);
+      setTransitionClass('slide-in');
+    }, 500);
+    setTimeout(() => {
+      setTransitionClass('');
+    }, 1000);
+  };
 
-            setIsLogin(!isLogin);
+  return (
+    <div className="tela-login-container">
+      <div className="div-esquerda">
+        <h1>BG Finanças<br />Planeje hoje, prospere amanhã</h1>
+        <img src="./images/Finance.svg" className="img" title="Finance" />
+      </div>
 
-            setTransitionClass('slide-in');
-
-        }, 500);
-
-        setTimeout(() => {
-
-            setTransitionClass('');
-
-        }, 1000);
-
-    };
-
-    return (
-
-        <div className="tela-login-container">
-
-            <div className="div-esquerda">
-
-                <h1>BG Finanças<br />Planeje hoje, prospere amanhã</h1>
-                <img src="./images/Finance.svg" className="img" title="Finance" />
-
-            </div>
-
-            <div className={`div-direita ${transitionClass}`}>
-                {isLogin ? (
-                    <CardLogin toggleForm={toggleForm} />
-                ) : (
-                    <CardCadastro toggleForm={toggleForm} />
-                )}
-            </div>
-
-        </div>
-    )
+      <div className={`div-direita ${transitionClass}`}>
+        {isLogin ? (
+          <CardLogin toggleForm={toggleForm} />
+        ) : (
+          <CardCadastro toggleForm={toggleForm} onCadastroComplete={handleCadastroComplete} />
+        )}
+      </div>
+    </div>
+  );
 }
 
-export default TelaLogin
+export default TelaLogin;
