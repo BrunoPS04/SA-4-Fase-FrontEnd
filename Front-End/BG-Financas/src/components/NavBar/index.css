@@ -7,6 +7,7 @@ a {
   color: var( --color_labels_all);
   text-decoration: none;
   transition: 0.3s;
+  cursor: pointer;
 }
 
 a:hover {

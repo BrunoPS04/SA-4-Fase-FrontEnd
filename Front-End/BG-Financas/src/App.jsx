@@ -1,5 +1,4 @@
 import './App.css'
-import Home from './pages/Home'
 
 function App() {
   
@@ -7,7 +6,6 @@ function App() {
 
     <div className='app-container'>
 
-      <Home />
       
     </div>
 

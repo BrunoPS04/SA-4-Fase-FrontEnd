@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHouse,faChartColumn,faUserPen } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse, faChartColumn, faUserPen } from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 
-function NavBar() {
+function NavBar({ setActiveComponent }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -20,9 +20,15 @@ function NavBar() {
         </div>
         <ul className={`nav-list ${isOpen ? 'open' : ''}`}>
           <div className='div-nome-user'><label>Olá,<span>Usuário</span></label></div>
-          <li><FontAwesomeIcon className='icon-home' icon={faHouse}/><a href="#">Home</a></li>
-          <li><FontAwesomeIcon className='icon-chart' icon={faChartColumn}/><a href="#">Relatorios</a></li>
-          <li><FontAwesomeIcon className='icon-user-pen' icon={faUserPen}/><a href="#">Editar Perfil</a></li>
+          <li onClick={() => setActiveComponent('painel')}>
+            <FontAwesomeIcon className='icon-home' icon={faHouse} /> <a>Home</a>
+          </li>
+          <li onClick={() => setActiveComponent('relatorios')}>
+            <FontAwesomeIcon className='icon-chart' icon={faChartColumn} /> <a>Relatórios</a>
+          </li>
+          <li onClick={() => setActiveComponent('perfil')}>
+            <FontAwesomeIcon className='icon-user-pen' icon={faUserPen} /> <a>Editar Perfil</a>
+          </li>
           <div className='line-botton'></div>
         </ul>
       </nav>

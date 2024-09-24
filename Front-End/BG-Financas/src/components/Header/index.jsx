@@ -2,9 +2,22 @@ import React from 'react'
 import DarkMode from '../DarkMode'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightFromBracket} from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router-dom';
 import './index.css'
 
 function Header() {
+
+    const navigate = useNavigate();
+
+    const logout = () => {
+
+        const confirmLogout = window.confirm('Você realmente quer sair do site?');
+        
+        if (confirmLogout) {
+            navigate('/'); 
+        }
+        
+    }
 
     return (
 
@@ -19,7 +32,7 @@ function Header() {
                     <DarkMode />
                     </div>
                     <FontAwesomeIcon className='door-exit' icon={faArrowRightFromBracket}/>
-                    <button>Logout</button>
+                    <button onClick={logout}>Logout</button>
                 </div>
             </header>
 
