@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan, faFilePen } from '@fortawesome/free-solid-svg-icons';
 import './index.css';
 
 function Painel() {
@@ -231,8 +233,8 @@ function Painel() {
                                     <td>{movimentacao.categoria}</td>
 
                                     <td className='td-acoes-btn'>
-                                        <button onClick={editarMovimentacao}><img src="./images/editar.svg" alt="Editar" /></button>
-                                        <button onClick={() =>excluirMovimentacao(movimentacao.id)}><img src="./images/lixeira.svg" alt="Excluir" /></button>
+                                        <button onClick={editarMovimentacao}><FontAwesomeIcon className='icon-file' icon={faFilePen}/></button>
+                                        <button onClick={() =>excluirMovimentacao(movimentacao.id)}><FontAwesomeIcon className='icon-trash' icon={faTrashCan}/></button>
                                     </td>
 
                                 </tr>

@@ -326,3 +326,13 @@ th, td {
         cursor: pointer;
     }
 }
+
+.icon-file{
+    font-size: 18px;
+    color: #ffb62d;
+}
+
+.icon-trash{
+    font-size: 18px;
+    color: #DB3A34;
+}
