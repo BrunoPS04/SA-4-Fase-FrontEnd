@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import "./index.css";
-import CardLogin from '../CardLogin';
-import CardCadastro from '../CardCadastro';
+import CardLogin from '../../components/CardLogin';
+import CardCadastro from '../../components/CardCadastro';
 
 function TelaLogin() {
   const [isLogin, setIsLogin] = useState(true);
