@@ -5,6 +5,7 @@ import Perfil from '../../pages/Perfil';
 import './index.css';
 
 function Main({ activeComponent }) {
+  
   const renderComponent = () => {
     switch (activeComponent) {
       case 'painel':

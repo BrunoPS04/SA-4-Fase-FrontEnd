@@ -1,0 +1,147 @@
+.container-relatorios {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 90vh;
+    background-color: var(--background_painel);
+    align-items: center;
+    justify-content: center;
+}
+
+.body-relatorios {
+    width: 90%;
+    height: 80%;
+    display: flex;
+    background-color: var(--background_nav_bar);
+    transition: all 0.3s ease-in-out;
+}
+
+.filtros {
+    width: 20%;
+    height: 100%;
+    background-color: var(--background_nav_bar);
+    transition: all 0.3s ease-in-out;
+}
+
+.header-filtros {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}
+
+.body-filtros {
+    padding-top: 50px;
+    height: 89%;
+}
+
+.divCategotias {
+    width: 100%;
+    /* height: 60%; */
+}
+
+.ttlSelecao {
+    color: var(--color_labels_all);
+    font-size: 18;
+    transition: all 0.3s ease-in-out;
+}
+
+.h2Filtros {
+    color: var(--color_labels_all);
+    transition: all 0.3s ease-in-out;
+}
+
+.slcPrincipais {
+    height: 35px;
+    width: 50%;
+    border-radius: 7px;
+    border: 1px solid;
+    text-align: center;
+}
+
+.escolhas {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+
+.escolhas-categorias {
+    margin: 5px;
+}
+
+
+.baixo-left {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    padding-top: 50px;
+    padding-left: 70px;
+}
+
+.btnConfirm {
+    height: 30px;
+    width: 80px;
+    border-radius: 7px;
+    border: 1px solid #fff;
+    cursor: pointer;
+    margin: 3px;
+}
+
+.body-right {
+    width: 80%;
+    height: 100%;
+}
+
+.body-header {
+    width: 100%;
+    height: 10%;
+    padding-left: 2.5%;
+    display: flex;
+    align-items: end;
+    justify-content: start;
+}
+
+.btnEscolhaReal {
+    background-color: var(--background_nav_bar);
+    color:  var(--color_labels_all);
+    transition: all 0.3s ease-in-out;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.btnEscolhaReal:hover {
+    opacity: 0.7;;
+}
+
+.btnEscolhaReal.active {
+    background-color: var(--background_label_movimentacoes);
+    transition: all 0.3s ease-in-out;
+    color: black;
+}
+
+.main-movimentacao {
+    background-color:  var(--background_nav_bar);
+    transition: all 0.3s ease-in-out;
+    height: 90%;
+}
+
+.main-grafico {
+    background-color:  var(--background_nav_bar);
+    transition: all 0.3s ease-in-out;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.painel-movimentacoes {
+    margin: 0 auto;
+    height: 100%;
+    width: 95%;
+    background-color: var(--background_painel_movimentacoes);
+    transition: all 0.3s ease-in-out;
+}

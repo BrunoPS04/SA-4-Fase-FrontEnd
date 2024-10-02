@@ -1,5 +1,6 @@
 :root {
-  --background_painel: hsl(0, 0%, 80%);
+  --background_painel: #cccccc;
+  --background_relatorios: #cccccc;
   --background_cards: #fff;
   --background_label_cards: #d9d9d9;
   --background_div_opcoes: #fff;
@@ -17,6 +18,7 @@
 
 [data-theme='dark'] {
   --background_painel: #35393b;
+  --background_relatorios: #35393b;
   --background_cards: #181a1b;
   --background_label_cards: #35393be7;
   --background_div_opcoes: #181a1b;

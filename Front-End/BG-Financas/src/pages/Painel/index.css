@@ -3,7 +3,7 @@
     flex-direction: column;
     height: 90vh;
     width: 100%;
-    background-color: var(--background_painel);
+    background-color: var(--background_relatorios);
     transition: all 0.3s ease-in-out;
 }
 
