@@ -178,6 +178,7 @@ function Relatorios() {
             </div>
         </div>
     )
+
 }
 
-export default Relatorios
+export default Relatorios;
