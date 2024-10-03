@@ -43,6 +43,7 @@ header {
         font-size: 20px;
         font-weight: 600;
         cursor: pointer;
+        outline: none;
     }
     .door-exit{
         color: #fff;

@@ -6,6 +6,7 @@
     background-color: var(--background_painel);
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease-in-out;
 }
 
 .body-relatorios {
@@ -84,6 +85,7 @@
     width: 80px;
     border-radius: 7px;
     border: 1px solid #fff;
+    background-color: #d9d9d9;
     cursor: pointer;
     margin: 3px;
 }
@@ -119,7 +121,7 @@
 .btnEscolhaReal.active {
     background-color: var(--background_label_movimentacoes);
     transition: all 0.3s ease-in-out;
-    color: black;
+    color: var(--color_labels_all);
 }
 
 .main-movimentacao {

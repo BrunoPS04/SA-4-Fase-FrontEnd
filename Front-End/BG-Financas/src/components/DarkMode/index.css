@@ -8,3 +8,7 @@
 .rotate {
     transform: rotate(180deg);
 }
+
+.dark-mode-button{
+    outline: none;
+}	

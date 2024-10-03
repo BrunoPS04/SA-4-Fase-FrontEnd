@@ -1,19 +1,12 @@
 .painel-container {
-<<<<<<< HEAD
-    display: flex;
-    flex-direction: column;
-    height: 90vh;
-    width: 100%;
-    background-color: var(--background_relatorios);
-    transition: all 0.3s ease-in-out;
-=======
+
   display: flex;
   flex-direction: column;
   height: 90vh;
   width: 100%;
-  background-color: var(--background_painel);
+  background-color: var(--background_relatorios);
   transition: all 0.3s ease-in-out;
->>>>>>> 0c4aa71499f479aecf2caddbe44838cea0bfb154
+
 }
 
 .painel {
@@ -256,6 +249,7 @@
   border-radius: 5px;
   margin-left: 10px;
   cursor: pointer;
+  outline: none;
 }
 
 .painel-movimentacoes {
@@ -371,8 +365,8 @@ td {
   height: 100%;
 }
 
-.title-modal{
-    color: #fff;
+.title-modal {
+  color: #fff;
 }
 
 .modal-container-inputs {
@@ -396,7 +390,7 @@ td {
   }
 }
 
-.card-modal-descricao{
+.card-modal-descricao {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -408,7 +402,7 @@ td {
   }
 }
 
-.card-modal-valor{
+.card-modal-valor {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -417,65 +411,65 @@ td {
   label {
     color: #fff;
     height: 20px;
-  } 
+  }
 }
 
-.card-modal-data{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 20%;
-  
-    label {
-      color: #fff;
-      height: 20px;
-    } 
+.card-modal-data {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 20%;
+
+  label {
+    color: #fff;
+    height: 20px;
+  }
 }
 
-.card-modal-categoria{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 20%;
-  
-    label {
-      color: #fff;
-      height: 20px;
-    } 
+.card-modal-categoria {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 20%;
+
+  label {
+    color: #fff;
+    height: 20px;
+  }
 }
 
-.card-modal-tipo{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 12%;
-  
-    label {
-      color: #fff;
-      text-align: center;
-      margin-left: 60px;
-    } 
+.card-modal-tipo {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 12%;
+
+  label {
+    color: #fff;
+    text-align: center;
+    margin-left: 60px;
+  }
 }
 
-.card-modal-tipo-input{
+.card-modal-tipo-input {
   display: flex;
   align-items: center;
   margin-top: 10px;
-  
+
   label {
     margin-left: 5px;
     margin-right: 5px;
   }
 }
 
-.modal-btns{
-    display: flex;
-    margin-top: 25px;
-    gap: 10px;
+.modal-btns {
+  display: flex;
+  margin-top: 25px;
+  gap: 10px;
 
-    button{
-        height: 20px;
-        width: 100px;
-        font-size: 16px;
-    }
+  button {
+    height: 20px;
+    width: 100px;
+    font-size: 16px;
+  }
 }
