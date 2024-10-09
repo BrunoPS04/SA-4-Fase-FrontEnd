@@ -65,7 +65,7 @@ function Relatorios() {
             <div className="body-relatorios">
                 <div className="filtros">
                     <div className="header-filtros">
-                        <h2 className='h2Filtros'><u>Filtros</u></h2>
+                        <h2 className='h2Filtros'><u>Filtro</u></h2>
                     </div>
                     <div className="body-filtros">
                         {/* <div className="escolhas">
@@ -73,7 +73,6 @@ function Relatorios() {
                             <select name="slcGrafico" id="slcGrafico" className="slcPrincipais" onChange={handleGraficoChange}>
                                 <option value=""></option>
                                 <option value="pizza">Pizza</option>
-                                <option value="barras">Barras</option>
                                 <option value="colunas">Colunas</option>
                             </select>
                         </div> */}

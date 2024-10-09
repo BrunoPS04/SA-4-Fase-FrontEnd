@@ -9,7 +9,6 @@ function Painel() {
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
   const [tipo, setTipo] = useState("");
-  const [categoria, setCategoria] = useState("");
   const [data, setData] = useState("");
   const [movimentacoes, setMovimentacoes] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -28,6 +27,40 @@ function Painel() {
   };
 
   const { receitaMesal, despesaMesal, saldoMesal } = calcularValores();
+
+  const [categoria, setCategoria] = useState('');
+  const [categorias, setCategorias] = useState([
+    'Alimentação',
+    'Transporte',
+    'Lazer',
+    'Saúde',
+    'Moradia',
+    'Bonificação',
+    'Educação',
+    ''
+  ]);
+
+  const [sugestoes, setSugestoes] = useState([]);
+  const [novaCategoria, setNovaCategoria] = useState('');
+
+  const handleCategoriaChange = (e) => {
+
+    const valorDigitado = e.target.value;
+    setCategoria(valorDigitado);
+
+    const novasSugestoes = categorias.filter((cat) =>
+      cat.toLowerCase().includes(valorDigitado.toLowerCase())
+    );
+    setSugestoes(novasSugestoes);
+  };
+
+  const handleAdicionarNovaCategoria = () => {
+    if (categoria && !categorias.includes(categoria)) {
+      setCategorias([...categorias, categoria]);
+      setSugestoes([]); 
+      setCategoria('');
+    }
+  };
 
   const adicionarMovimentacao = () => {
     const novaMovimentacao = {
@@ -134,6 +167,7 @@ function Painel() {
           <label>Descrição</label>
 
           <input
+            className="inpt-descricao"
             type="text"
             placeholder="Ex: Conta de luz"
             value={descricao}
@@ -145,6 +179,7 @@ function Painel() {
           <label>Valor</label>
 
           <input
+            className="inpt-valor"
             type="text"
             placeholder="Ex: 35.00"
             value={valor}
@@ -182,6 +217,7 @@ function Painel() {
           <label>Data de laçamento</label>
 
           <input
+          className="inpt-data"
             type="date"
             value={data}
             onChange={(e) => setData(e.target.value)}
@@ -190,19 +226,27 @@ function Painel() {
 
         <div className="opcao-categoria">
           <label>Categoria</label>
-
-          <select
+          <input
+            className="inpt-categoria"
+            type="text"
             value={categoria}
-            onChange={(e) => setCategoria(e.target.value)}
-          >
-            <option value="">Selecione</option>
-            <option value="Alimentação">Alimentação</option>
-            <option value="Transporte">Transporte</option>
-            <option value="Lazer">Lazer</option>
-            <option value="Saúde">Saúde</option>
-            <option value="Moradia">Moradia</option>
-            <option value="Outros">Outros</option>
-          </select>
+            onChange={handleCategoriaChange}
+            placeholder="Digite"
+            maxLength={30}
+          />
+
+          {categoria && (
+            <ul className="sugestoes-categorias">
+              {sugestoes.map((sugestao, index) => (
+                <li key={index} onClick={() => setCategoria(sugestao)}>
+                  {sugestao}
+                </li>
+              ))}
+              <div className="nova-categoria" onClick={handleAdicionarNovaCategoria}>
+                <button className="btn-nova-categoria">Criar categoria: "{categoria}"</button>
+              </div>
+            </ul>
+          )}
         </div>
 
         <div className="div-btn-adicionar">
@@ -266,7 +310,7 @@ function Painel() {
         contentLabel="Editar Movimentação"
         className="custom-modal"
       >
-        
+
         <h2 className="title-modal">Editar Movimentação</h2>
 
         <div className="modal-container">
@@ -314,7 +358,9 @@ function Painel() {
                 <option value="Moradia">Moradia</option>
                 <option value="Outros">Outros</option>
               </select>
+
             </div>
+
             <div className="card-modal-tipo">
 
               <label>Tipo</label>
@@ -341,8 +387,8 @@ function Painel() {
 
           </div>
           <div className="modal-btns">
-          <button onClick={salvarMovimentacao}>Salvar</button>
-          <button onClick={() => setModalIsOpen(false)}>Fechar</button>
+            <button onClick={salvarMovimentacao}>Salvar</button>
+            <button onClick={() => setModalIsOpen(false)}>Cancelar</button>
           </div>
         </div>
       </Modal>
