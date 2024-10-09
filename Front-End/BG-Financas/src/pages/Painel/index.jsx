@@ -11,8 +11,19 @@ function Painel() {
   const [tipo, setTipo] = useState("");
   const [data, setData] = useState("");
   const [movimentacoes, setMovimentacoes] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [movimentacaoEditando, setMovimentacaoEditando] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const [categoria, setCategoria] = useState("");
+  const [categorias, setCategorias] = useState([
+    "Alimentação",
+    "Transporte",
+    "Lazer",
+    "Saúde",
+    "Moradia",
+    "Bonificação",
+    "Educação",
+  ]);
 
   const calcularValores = () => {
     const receitaMesal = movimentacoes
@@ -28,40 +39,22 @@ function Painel() {
 
   const { receitaMesal, despesaMesal, saldoMesal } = calcularValores();
 
-  const [categoria, setCategoria] = useState('');
-  const [categorias, setCategorias] = useState([
-    'Alimentação',
-    'Transporte',
-    'Lazer',
-    'Saúde',
-    'Moradia',
-    'Bonificação',
-    'Educação',
-    ''
-  ]);
-
-  const [sugestoes, setSugestoes] = useState([]);
-  const [novaCategoria, setNovaCategoria] = useState('');
-
-  const handleCategoriaChange = (e) => {
-
-    const valorDigitado = e.target.value;
-    setCategoria(valorDigitado);
-
-    const novasSugestoes = categorias.filter((cat) =>
-      cat.toLowerCase().includes(valorDigitado.toLowerCase())
-    );
-    setSugestoes(novasSugestoes);
+  const categoriaEscolhida = (e) => {
+    setCategoria(e.target.value);
   };
 
-  const handleAdicionarNovaCategoria = () => {
-    if (categoria && !categorias.includes(categoria)) {
+  const adicionarNovaCategoria = () => {
+    if (!categorias.includes(categoria)) {
       setCategorias([...categorias, categoria]);
-      setSugestoes([]); 
-      setCategoria('');
     }
+    setCategoria("");
   };
 
+  // Filtra categorias que correspondem ao que está sendo digitado
+  const categoriasFiltradas = categorias.filter((cat) =>
+    cat.toLowerCase().includes(categoria.toLowerCase())
+  );
+  
   const adicionarMovimentacao = () => {
     const novaMovimentacao = {
       id: new Date().getTime(),
@@ -217,7 +210,7 @@ function Painel() {
           <label>Data de laçamento</label>
 
           <input
-          className="inpt-data"
+            className="inpt-data"
             type="date"
             value={data}
             onChange={(e) => setData(e.target.value)}
@@ -230,21 +223,29 @@ function Painel() {
             className="inpt-categoria"
             type="text"
             value={categoria}
-            onChange={handleCategoriaChange}
+            onChange={categoriaEscolhida}
             placeholder="Digite"
             maxLength={30}
           />
 
           {categoria && (
             <ul className="sugestoes-categorias">
-              {sugestoes.map((sugestao, index) => (
-                <li key={index} onClick={() => setCategoria(sugestao)}>
-                  {sugestao}
-                </li>
-              ))}
-              <div className="nova-categoria" onClick={handleAdicionarNovaCategoria}>
-                <button className="btn-nova-categoria">Criar categoria: "{categoria}"</button>
-              </div>
+              {categoriasFiltradas.length > 0 ? (
+                categoriasFiltradas.map((cat, index) => (
+                  <li key={index} onClick={() => setCategoria(cat)}>
+                    {cat}
+                  </li>
+                ))
+              ) : (
+                <div
+                  className="nova-categoria"
+                  onClick={adicionarNovaCategoria}
+                >
+                  <button className="btn-nova-categoria">
+                    Criar categoria: "{categoria}"
+                  </button>
+                </div>
+              )}
             </ul>
           )}
         </div>
@@ -310,11 +311,9 @@ function Painel() {
         contentLabel="Editar Movimentação"
         className="custom-modal"
       >
-
         <h2 className="title-modal">Editar Movimentação</h2>
 
         <div className="modal-container">
-
           <div className="modal-container-inputs">
             <div className="card-modal-descricao">
               <label>Descrição</label>
@@ -358,11 +357,9 @@ function Painel() {
                 <option value="Moradia">Moradia</option>
                 <option value="Outros">Outros</option>
               </select>
-
             </div>
 
             <div className="card-modal-tipo">
-
               <label>Tipo</label>
 
               <div className="card-modal-tipo-input">
@@ -384,7 +381,6 @@ function Painel() {
                 <label>Saída</label>
               </div>
             </div>
-
           </div>
           <div className="modal-btns">
             <button onClick={salvarMovimentacao}>Salvar</button>
