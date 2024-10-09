@@ -54,7 +54,7 @@ function Painel() {
   const categoriasFiltradas = categorias.filter((cat) =>
     cat.toLowerCase().includes(categoria.toLowerCase())
   );
-  
+
   const adicionarMovimentacao = () => {
     const novaMovimentacao = {
       id: new Date().getTime(),
@@ -342,21 +342,37 @@ function Painel() {
               />
             </div>
 
-            <div className="card-modal-categoria">
+            <div className="card-modal-opcao-categoria">
               <label>Categoria</label>
-
-              <select
+              <input
+                className="inpt-categoria"
+                type="text"
                 value={categoria}
-                onChange={(e) => setCategoria(e.target.value)}
-              >
-                <option value="">Selecione</option>
-                <option value="Alimentação">Alimentação</option>
-                <option value="Transporte">Transporte</option>
-                <option value="Lazer">Lazer</option>
-                <option value="Saúde">Saúde</option>
-                <option value="Moradia">Moradia</option>
-                <option value="Outros">Outros</option>
-              </select>
+                onChange={categoriaEscolhida}
+                placeholder="Digite"
+                maxLength={30}
+              />
+
+              {categoria && (
+                <ul className="modal-sugestoes-categorias">
+                  {categoriasFiltradas.length > 0 ? (
+                    categoriasFiltradas.map((cat, index) => (
+                      <li key={index} onClick={() => setCategoria(cat)}>
+                        {cat}
+                      </li>
+                    ))
+                  ) : (
+                    <div
+                      className="modal-nova-categoria"
+                      onClick={adicionarNovaCategoria}
+                    >
+                      <button className="modal-btn-nova-categoria">
+                        Criar categoria: "{categoria}"
+                      </button>
+                    </div>
+                  )}
+                </ul>
+              )}
             </div>
 
             <div className="card-modal-tipo">
