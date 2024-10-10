@@ -1,12 +1,10 @@
 .painel-container {
-
   display: flex;
   flex-direction: column;
   height: 90vh;
   width: 100%;
   background-color: var(--background_relatorios);
   transition: all 0.3s ease-in-out;
-
 }
 
 .painel {
@@ -269,7 +267,6 @@
     background-color: #f0f0f0;
     cursor: pointer;
   }
-
 }
 
 .div-btn-adicionar {
@@ -515,7 +512,7 @@ td {
   }
 }
 
-.card-modal-opcao-categoria{
+.card-modal-opcao-categoria {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -578,4 +575,53 @@ td {
   cursor: pointer;
   font-weight: 600;
   color: #2b9348;
+}
+
+.custom-modal-campo-vazio {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffff;
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 450px;
+  height: 150px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 3px 3px 0px 0px #00000065;
+  transition: all 0.3s ease-in-out;
+
+  .modal-content-campo-vazio {
+    height: 100%;
+    width: 100%;
+  }
+
+  .modal-div-campo-vazio {
+    height: 50%;
+    width: 100%;
+    p {
+      margin-top: 10px;
+    }
+  }
+  .modal-btn-campo-vazio {
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    height: 50%;
+    width: 100%;
+
+    button {
+      height: 35px;
+      width: 60px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-weight: 600;
+      color: #fff;
+      background-color: #2b8293;
+    }
+  }
 }

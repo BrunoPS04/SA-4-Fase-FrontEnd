@@ -12,7 +12,9 @@ function Painel() {
   const [data, setData] = useState("");
   const [movimentacoes, setMovimentacoes] = useState([]);
   const [movimentacaoEditando, setMovimentacaoEditando] = useState(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalIsOpenEdit, setModalIsOpenEdit] = useState(false);
+
+  const [modalAlertCamposVazios, setModalAlertCamposVazios] = useState(false);
 
   const [categoria, setCategoria] = useState("");
   const [categorias, setCategorias] = useState([
@@ -24,6 +26,12 @@ function Painel() {
     "Bonificação",
     "Educação",
   ]);
+
+  const [categoriaModal, setCategoriaModal] = useState("");
+  const [tipoModal, setTipoModal] = useState("");
+  const [valorModal, setValorModal] = useState("");
+  const [dataModal, setDataModal] = useState("");
+  const [descricaoModal, setDescricaoModal] = useState("");
 
   const calcularValores = () => {
     const receitaMesal = movimentacoes
@@ -43,6 +51,10 @@ function Painel() {
     setCategoria(e.target.value);
   };
 
+  const categoriaEscolhidaModal = (e) => {
+    setCategoriaModal(e.target.value);
+  };
+
   const adicionarNovaCategoria = () => {
     if (!categorias.includes(categoria)) {
       setCategorias([...categorias, categoria]);
@@ -50,23 +62,44 @@ function Painel() {
     setCategoria("");
   };
 
+  const adicionarNovaCategoriaModal = () => {
+    if (!categorias.includes(categoriaModal)) {
+      setCategorias([...categorias, categoriaModal]);
+    }
+    setCategoriaModal("");
+  };
+
   // Filtra categorias que correspondem ao que está sendo digitado
   const categoriasFiltradas = categorias.filter((cat) =>
     cat.toLowerCase().includes(categoria.toLowerCase())
   );
 
-  const adicionarMovimentacao = () => {
-    const novaMovimentacao = {
-      id: new Date().getTime(),
-      descricao,
-      valor: parseFloat(valor),
-      tipo,
-      categoria,
-      data,
-    };
+  const categoriasFiltradasModal = categorias.filter((cat) =>
+    cat.toLowerCase().includes(categoriaModal.toLowerCase())
+  );
 
-    setMovimentacoes([...movimentacoes, novaMovimentacao]);
-    resetarCampos();
+  const adicionarMovimentacao = () => {
+    if (
+      descricao == "" ||
+      valor == "" ||
+      tipo == "" ||
+      categoria == "" ||
+      data == ""
+    ) {
+      setModalAlertCamposVazios(true);
+    } else {
+      const novaMovimentacao = {
+        id: new Date().getTime(),
+        descricao,
+        valor: parseFloat(valor),
+        tipo,
+        categoria,
+        data,
+      };
+
+      setMovimentacoes([...movimentacoes, novaMovimentacao]);
+      resetarCampos();
+    }
   };
 
   const resetarCampos = () => {
@@ -75,16 +108,22 @@ function Painel() {
     setTipo("");
     setCategoria("");
     setData("");
+
+    setDescricaoModal("");
+    setValorModal("");
+    setDataModal("");
+    setTipoModal("");
+    setCategoriaModal("");
   };
 
   const editarMovimentacao = (movimentacao) => {
-    setDescricao(movimentacao.descricao);
-    setValor(movimentacao.valor);
-    setTipo(movimentacao.tipo);
-    setCategoria(movimentacao.categoria);
-    setData(movimentacao.data);
+    setDescricaoModal(movimentacao.descricao);
+    setValorModal(movimentacao.valor);
+    setTipoModal(movimentacao.tipo);
+    setCategoriaModal(movimentacao.categoria);
+    setDataModal(movimentacao.data);
     setMovimentacaoEditando(movimentacao.id);
-    setModalIsOpen(true);
+    setModalIsOpenEdit(true);
   };
 
   const excluirMovimentacao = (id) => {
@@ -106,18 +145,18 @@ function Painel() {
       if (movimentacao.id === movimentacaoEditando) {
         return {
           ...movimentacao,
-          descricao,
-          valor: parseFloat(valor),
-          tipo,
-          categoria,
-          data,
+          descricao: descricaoModal,
+          valor: parseFloat(valorModal),
+          tipo: tipoModal,
+          categoria: categoriaModal,
+          data: dataModal,
         };
       }
       return movimentacao;
     });
 
     setMovimentacoes(novasMovimentacoes);
-    setModalIsOpen(false);
+    setModalIsOpenEdit(false);
     resetarCampos();
   };
 
@@ -306,8 +345,8 @@ function Painel() {
       </div>
 
       <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
+        isOpen={modalIsOpenEdit}
+        onRequestClose={() => setModalIsOpenEdit(false)}
         contentLabel="Editar Movimentação"
         className="custom-modal"
       >
@@ -319,8 +358,8 @@ function Painel() {
               <label>Descrição</label>
               <input
                 type="text"
-                value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
+                value={descricaoModal}
+                onChange={(e) => setDescricaoModal(e.target.value)}
               />
             </div>
 
@@ -328,8 +367,8 @@ function Painel() {
               <label>Valor</label>
               <input
                 type="text"
-                value={valor}
-                onChange={(e) => setValor(e.target.value)}
+                value={valorModal}
+                onChange={(e) => setValorModal(e.target.value)}
               />
             </div>
 
@@ -337,8 +376,8 @@ function Painel() {
               <label>Data</label>
               <input
                 type="date"
-                value={data}
-                onChange={(e) => setData(e.target.value)}
+                value={dataModal}
+                onChange={(e) => setDataModal(e.target.value)}
               />
             </div>
 
@@ -347,27 +386,27 @@ function Painel() {
               <input
                 className="inpt-categoria"
                 type="text"
-                value={categoria}
-                onChange={categoriaEscolhida}
+                value={categoriaModal}
+                onChange={categoriaEscolhidaModal}
                 placeholder="Digite"
                 maxLength={30}
               />
 
-              {categoria && (
+              {categoriaModal && (
                 <ul className="modal-sugestoes-categorias">
-                  {categoriasFiltradas.length > 0 ? (
-                    categoriasFiltradas.map((cat, index) => (
-                      <li key={index} onClick={() => setCategoria(cat)}>
+                  {categoriasFiltradasModal.length > 0 ? (
+                    categoriasFiltradasModal.map((cat, index) => (
+                      <li key={index} onClick={() => setCategoriaModal(cat)}>
                         {cat}
                       </li>
                     ))
                   ) : (
                     <div
                       className="modal-nova-categoria"
-                      onClick={adicionarNovaCategoria}
+                      onClick={adicionarNovaCategoriaModal}
                     >
                       <button className="modal-btn-nova-categoria">
-                        Criar categoria: "{categoria}"
+                        Criar categoria: "{categoriaModal}"
                       </button>
                     </div>
                   )}
@@ -383,16 +422,16 @@ function Painel() {
                   type="radio"
                   name="tipo"
                   value="entrada"
-                  checked={tipo === "entrada"}
-                  onChange={(e) => setTipo(e.target.value)}
+                  checked={tipoModal === "entrada"}
+                  onChange={(e) => setTipoModal(e.target.value)}
                 />
                 <label>Entrada</label>
                 <input
                   type="radio"
                   name="tipo"
                   value="saida"
-                  checked={tipo === "saida"}
-                  onChange={(e) => setTipo(e.target.value)}
+                  checked={tipoModal === "saida"}
+                  onChange={(e) => setTipoModal(e.target.value)}
                 />
                 <label>Saída</label>
               </div>
@@ -400,7 +439,23 @@ function Painel() {
           </div>
           <div className="modal-btns">
             <button onClick={salvarMovimentacao}>Salvar</button>
-            <button onClick={() => setModalIsOpen(false)}>Cancelar</button>
+            <button onClick={() => setModalIsOpenEdit(false)}>Cancelar</button>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={modalAlertCamposVazios}
+        onRequestClose={() => setModalAlertCamposVazios(false)}
+        contentLabel="contentCampoVazio"
+        className="custom-modal-campo-vazio"
+      >
+        <div className="modal-content-campo-vazio">
+          <div className="modal-div-campo-vazio">
+            <h2>Campos vazios</h2>
+            <p>Por favor, preencha todos os campos.</p>
+          </div>
+          <div className="modal-btn-campo-vazio">
+            <button onClick={() => setModalAlertCamposVazios(false)}>OK</button>
           </div>
         </div>
       </Modal>
