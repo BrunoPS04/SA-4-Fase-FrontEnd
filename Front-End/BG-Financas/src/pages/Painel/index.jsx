@@ -15,6 +15,8 @@ function Painel() {
   const [modalIsOpenEdit, setModalIsOpenEdit] = useState(false);
 
   const [modalAlertCamposVazios, setModalAlertCamposVazios] = useState(false);
+  const [modalAlertDeleteMovimentacao, setModalAlertDeleteMovimentacao] = useState(false);
+  const [idMovimentacaoExcluir, setIdMovimentacaoExcluir] = useState(null);
 
   const [categoria, setCategoria] = useState("");
   const [categorias, setCategorias] = useState([
@@ -127,10 +129,16 @@ function Painel() {
   };
 
   const excluirMovimentacao = (id) => {
+    setIdMovimentacaoExcluir(id);
+    setModalAlertDeleteMovimentacao(true);
+  };
+
+  const confirmarExclusao = () => {
     const novasMovimentacoes = movimentacoes.filter(
-      (movimentacao) => movimentacao.id !== id
+      (movimentacao) => movimentacao.id !== idMovimentacaoExcluir
     );
     setMovimentacoes(novasMovimentacoes);
+    setModalAlertDeleteMovimentacao(false);
   };
 
   const formatarData = (dataISO) => {
@@ -443,6 +451,7 @@ function Painel() {
           </div>
         </div>
       </Modal>
+
       <Modal
         isOpen={modalAlertCamposVazios}
         onRequestClose={() => setModalAlertCamposVazios(false)}
@@ -456,6 +465,34 @@ function Painel() {
           </div>
           <div className="modal-btn-campo-vazio">
             <button onClick={() => setModalAlertCamposVazios(false)}>OK</button>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={modalAlertDeleteMovimentacao}
+        onRequestClose={() => setModalAlertDeleteMovimentacao(false)}
+        contentLabel="contentDeletarMovimentacao"
+        className="custom-modal-deletar-movimentacao"
+      >
+        <div className="modal-content-deletar-movimentacao">
+          <div className="modal-div-deletar-movimentacao">
+            <h2>Deletar movimentação</h2>
+            <p>Você tem certeza que deseja deletar essa movimentação?</p>
+          </div>
+          <div className="modal-btns-deletar-movimentacao">
+            <button
+              className="btn-deletar-movimentacao"
+              onClick={confirmarExclusao}
+            >
+              Deletar
+            </button>
+            <button
+              className="btn-cancelar-deletar-movimentacao"
+              onClick={() => setModalAlertDeleteMovimentacao(false)}
+            >
+              Cancelar
+            </button>
           </div>
         </div>
       </Modal>

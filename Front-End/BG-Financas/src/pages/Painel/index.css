@@ -577,7 +577,8 @@ td {
   color: #2b9348;
 }
 
-.custom-modal-campo-vazio {
+.custom-modal-campo-vazio,
+.custom-modal-deletar-movimentacao {
   display: flex;
   flex-direction: column;
   background-color: #ffff;
@@ -616,12 +617,46 @@ td {
     button {
       height: 35px;
       width: 60px;
+      border-radius: 5px;
       border: none;
       outline: none;
       cursor: pointer;
       font-weight: 600;
       color: #fff;
-      background-color: #2b8293;
+      background-color: #0078d4;
     }
+  }
+}
+
+.modal-btns-deletar-movimentacao {
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  height: 50%;
+  width: 100%;
+  gap: 10px;
+
+  .btn-deletar-movimentacao {
+    height: 35px;
+    width: 60px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: 600;
+    color: #fff;
+    background-color: #db3a34;
+  }
+
+  .btn-cancelar-deletar-movimentacao {
+    height: 35px;
+    width: 68px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: 600;
+    color: #000;
+    background-color: #d9d9d9;
   }
 }

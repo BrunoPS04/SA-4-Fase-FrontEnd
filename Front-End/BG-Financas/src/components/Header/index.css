@@ -1,62 +1,120 @@
 header {
-    display: flex;
-    width: 100%;
-    height: 10vh;
-    background-color: #2B9348;
+  display: flex;
+  width: 100%;
+  height: 10vh;
+  background-color: #2b9348;
 }
 
 .div-logo {
-    display: flex;
-    align-items: center;
-    padding-left: 25px;
-    width: 50%;
-    height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 25px;
+  width: 50%;
+  height: 100%;
 
-    label {
-        color: #fff;
-        font-size: 35px;
-        font-weight: 500;
-        letter-spacing: 2px;
-    }
+  label {
+    color: #fff;
+    font-size: 35px;
+    font-weight: 500;
+    letter-spacing: 2px;
+  }
 
-    span {
-        color: #fff;
-        font-style: italic;
-        font-size: 40px;
-        font-weight: 600;
-        padding-right: 15px;
-    }
+  span {
+    color: #fff;
+    font-style: italic;
+    font-size: 40px;
+    font-weight: 600;
+    padding-right: 15px;
+  }
 }
 
 .div-exit {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 25px;
-    width: 50%;
-    height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 25px;
+  width: 50%;
+  height: 100%;
 
-    button {
-        color: #fff;
-        background-color: transparent;
-        border: none;
-        font-size: 20px;
-        font-weight: 600;
-        cursor: pointer;
-        outline: none;
-    }
-    .door-exit{
-        color: #fff;
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
-    }
+  button {
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+  }
+  .door-exit {
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
 }
 
-.dark-mode{
-    display: grid;
-    place-items: center;
-    height: 100%;
-    width: 100px;
-    padding-top: 4px;
+.dark-mode {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  width: 100px;
+  padding-top: 4px;
+}
+
+.custom-modal-logout {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffff;
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 450px;
+  height: 150px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 3px 3px 0px 0px #00000065;
+  transition: all 0.3s ease-in-out;
+}
+
+.modal-div-logout {
+  p {
+    margin-top: 10px;
+  }
+}
+
+.modal-btns-logout {
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  margin-top: 5px;
+  height: 50%;
+  width: 100%;
+  gap: 10px;
+
+  .btn-comfirm-logout {
+    height: 35px;
+    width: 60px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: 600;
+    color: #fff;
+    background-color: #db3a34;
+  }
+
+  .btn-cancelar-logout {
+    height: 35px;
+    width: 68px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: 600;
+    color: #000;
+    background-color: #d9d9d9;
+  }
 }
