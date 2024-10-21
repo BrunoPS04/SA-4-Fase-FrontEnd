@@ -3,32 +3,74 @@ import "./index.css";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import axios from "axios";
+import { useEffect } from "react";
+import Modal from "react-modal";
 
 function Perfil() {
+  const [modalEditarIsOpen, setModalEditarIsOpen] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     firstName: "",
     lastName: "",
-    senha: "Test123456",
+    senha: "",
   });
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/users/profile",
+          {
+            withCredentials: true,
+          }
+        );
+        const userData = response.data;
+        setFormData({
+          email: userData.email,
+          firstName: userData.nome,
+          lastName: userData.ultimoNome,
+          senha: userData.senha,
+        });
+      } catch (error) {
+        console.error("Erro ao buscar os dados do usuário:", error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+  const editarUsuario = () => {
+    setModalEditarIsOpen(true);
+  };
+
+  // Função para salvar as alterações
+  const salvarAlteracoes = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/users/${formData.email}`,  // Substitua pela ID do usuário se necessário
+        formData,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Perfil atualizado com sucesso!");
+        setModalEditarIsOpen(false);  // Fecha o modal após salvar
+      }
+    } catch (error) {
+      console.error("Erro ao salvar as alterações:", error);
+      alert("Erro ao salvar as alterações. Tente novamente.");
+    }
+  };
+
+  // Função para lidar com mudanças nos inputs
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSave = () => {
-    console.log("Changes saved", formData);
-  };
-
-  const handleCancel = () => {
-    setFormData({
-      email: "",
-      firstName: "",
-      lastName: "",
-      senha: "",
     });
   };
 
@@ -42,45 +84,22 @@ function Perfil() {
     <div className="perfil-container">
       <div className="container">
         <h2 className="header">
-          Olá,<span> Bruno</span>
-          <span> Severino</span>
+          Olá,<span> {formData.firstName}</span>
+          <span> {formData.lastName}</span>
         </h2>
         <div className="form-container">
           <div className="left-container">
             <div className="form-group">
               <label className="lbl">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="input"
-                readOnly
-              />
+              <input type="email" value={formData.email} readOnly />
             </div>
-
             <div className="form-group">
               <label className="lbl">Nome</label>
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="input"
-                readOnly
-              />
+              <input type="text" value={formData.firstName} readOnly />
             </div>
-
             <div className="form-group">
               <label className="lbl">Sobrenome</label>
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                className="input"
-                readOnly
-              />
+              <input type="text" value={formData.lastName} readOnly />
             </div>
 
             <div className="form-group-password">
@@ -90,12 +109,14 @@ function Perfil() {
                   type={showPassword ? "text" : "password"}
                   name="senha"
                   value={formData.senha}
-                  onChange={handleChange}
                   className="input-password"
                   readOnly
                 />
 
-                <button className="btn-password" onClick={togglePasswordVisibility}>
+                <button
+                  className="btn-password"
+                  onClick={togglePasswordVisibility}
+                >
                   {showPassword ? (
                     <FontAwesomeIcon className="icon-eye" icon={faEyeSlash} />
                   ) : (
@@ -106,12 +127,8 @@ function Perfil() {
             </div>
 
             <div className="button-container">
-              <button onClick={handleSave} className="save-button">
-                Salvar Mudanças
-              </button>
-              <button onClick={handleCancel} className="cancel-button">
-                Cancelar
-              </button>
+              <button onClick={editarUsuario} className="save-button">Editar Perfil</button>
+              <button className="cancel-button">Excluir Conta</button>
             </div>
           </div>
 
@@ -120,6 +137,16 @@ function Perfil() {
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={modalEditarIsOpen}
+        onRequestClose={() => setModalEditarIsOpen(false)}
+        contentLabel="ModalEditar"
+        className="modal-editar"
+      >
+        <div className="modal-container-editar">
+
+        </div>
+      </Modal>
     </div>
   );
 }

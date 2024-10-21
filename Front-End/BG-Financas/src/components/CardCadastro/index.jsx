@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import "./index.css";
 import axios from "axios";
+import Modal from "react-modal";
 
 function CardCadastro({ toggleForm, onCadastroComplete }) {
+
+  const [modalCadastroIsOpen, setModalCadastroIsOpen] = useState(false);
+  const [errorMenssage, setErrorMenssage] = useState("");
 
   const [formData, setFormData] = useState({
     nome: "",
@@ -11,10 +15,10 @@ function CardCadastro({ toggleForm, onCadastroComplete }) {
     senha: "",
     confirmarSenha: "",
   });
-  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({
       ...formData,
       [name]: value,
@@ -27,22 +31,25 @@ function CardCadastro({ toggleForm, onCadastroComplete }) {
     // Validação do formulário
     for (let key in formData) {
       if (formData[key] === "" && key !== "confirmarSenha") {
-        setError("Todos os campos devem ser preenchidos.");
+        setErrorMenssage("Todos os campos devem ser preenchidos.");
+        setModalCadastroIsOpen(true);
         return;
       }
     }
 
     if (!formData.email.endsWith("@gmail.com")) {
-      setError("O email deve terminar com @gmail.com.");
+      setErrorMenssage("O email deve terminar com @gmail.com.");
+      setModalCadastroIsOpen(true);
       return;
     }
 
     if (formData.senha !== formData.confirmarSenha) {
-      setError("Senhas não conferem.");
+      setErrorMenssage("Senhas não conferem.");
+      setModalCadastroIsOpen(true);
       return;
     }
 
-    setError("");
+    setErrorMenssage("");
 
     try {
       
@@ -64,7 +71,6 @@ function CardCadastro({ toggleForm, onCadastroComplete }) {
       }
     } catch (error) {
       console.error("Erro ao adicionar/atualizar user:", error);
-      setError("Ocorreu um erro ao enviar os dados.");
     }
   };
 
@@ -127,8 +133,6 @@ function CardCadastro({ toggleForm, onCadastroComplete }) {
         />
       </div>
 
-      {error && <div className="error-message">{error}</div>}
-
       <button type="submit" className="btn-cadastro">
         Cadastrar-se
       </button>
@@ -136,6 +140,22 @@ function CardCadastro({ toggleForm, onCadastroComplete }) {
       <label onClick={toggleForm} className="label-cadastro">
         Já possui cadastro? Login aqui
       </label>
+      <Modal
+        isOpen={modalCadastroIsOpen}
+        onRequestClose={() => setModalCadastroIsOpen(false)}
+        contentLabel="ModalCadastro"
+        className="modal-cadastro"
+      >
+        <div className="modal-content-cadastro">
+          <div className="modal-div-cadastro">
+            <h2>Error ao relizar Cadastro</h2>
+            <p>{errorMenssage}</p>
+            <div className="modal-btn-cadastro">
+              <button onClick={() => setModalCadastroIsOpen(false)}>Ok</button>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </form>
   );
 }

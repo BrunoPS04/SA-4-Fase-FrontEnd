@@ -52,6 +52,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+
 }
 
 .form-group-password {
@@ -86,7 +87,7 @@
   border-bottom-right-radius: 5px;
 }
 
-.input {
+input {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -129,4 +130,24 @@
 
 .save-button:hover {
   opacity: 0.7;
+}
+
+.modal-editar{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #2b9348;
+  z-index: 9999;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 950px;
+  height: 40vh;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 3px 3px 0px 0px #00000065;
+  transition: all 0.3s ease-in-out;
 }
