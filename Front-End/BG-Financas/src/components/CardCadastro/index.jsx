@@ -4,9 +4,10 @@ import axios from "axios";
 import Modal from "react-modal";
 
 function CardCadastro({ toggleForm, onCadastroComplete }) {
-
   const [modalCadastroIsOpen, setModalCadastroIsOpen] = useState(false);
+  const [modalCadastroSuccess, setModalCadastroSuccess] = useState(false);
   const [errorMenssage, setErrorMenssage] = useState("");
+  const [cadastroSuccess, setCadastroSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
     nome: "",
@@ -28,7 +29,6 @@ function CardCadastro({ toggleForm, onCadastroComplete }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validação do formulário
     for (let key in formData) {
       if (formData[key] === "" && key !== "confirmarSenha") {
         setErrorMenssage("Todos os campos devem ser preenchidos.");
@@ -52,8 +52,6 @@ function CardCadastro({ toggleForm, onCadastroComplete }) {
     setErrorMenssage("");
 
     try {
-      
-      // Adicionar novo cliente (POST)
       const response = await axios.post(
         "http://localhost:8080/users",
         formData
@@ -65,12 +63,20 @@ function CardCadastro({ toggleForm, onCadastroComplete }) {
           email: "",
           senha: "",
           confirmarSenha: "",
-        }); // Limpa o formulário
+        });
+        setCadastroSuccess(true);
+        setModalCadastroSuccess(true);
         console.log("Cliente cadastrado com sucesso!");
-        onCadastroComplete();
       }
     } catch (error) {
       console.error("Erro ao adicionar/atualizar user:", error);
+    }
+  };
+
+  const closeModalCadastroSuccess = () => {
+    setModalCadastroSuccess(false);
+    if (cadastroSuccess) {
+      onCadastroComplete();
     }
   };
 
@@ -152,6 +158,21 @@ function CardCadastro({ toggleForm, onCadastroComplete }) {
             <p>{errorMenssage}</p>
             <div className="modal-btn-cadastro">
               <button onClick={() => setModalCadastroIsOpen(false)}>Ok</button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={modalCadastroSuccess}
+        onRequestClose={() => setModalCadastroSuccess(false)}
+        contentLabel="ModalCadastroSuccess"
+        className="modal-cadastro-success"
+      >
+        <div className="modal-content-cadastro-success">
+          <div className="modal-div-cadastro-success">
+            <h2>Cadastro realizado com sucesso</h2>
+            <div className="modal-btn-cadastro-success">
+              <button onClick={closeModalCadastroSuccess}>Ok</button>
             </div>
           </div>
         </div>

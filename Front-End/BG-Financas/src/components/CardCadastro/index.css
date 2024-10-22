@@ -76,7 +76,8 @@
   opacity: 0.7;
 }
 
-.modal-cadastro {
+.modal-cadastro,
+.modal-cadastro-success {
   display: flex;
   flex-direction: column;
   background-color: #ffff;
@@ -94,7 +95,8 @@
   transition: all 0.3s ease-in-out;
 }
 
-.modal-content-cadastro {
+.modal-content-cadastro,
+.modal-content-cadastro-success {
   width: 100%;
   height: 100%;
 }
@@ -106,8 +108,14 @@
     margin-top: 10px;
   }
 }
+.modal-div-cadastro-success{
+  margin-top: 20px;
+  height: 50%;
+  width: 100%;
+}
 
-.modal-btn-cadastro {
+.modal-btn-cadastro,
+.modal-btn-cadastro-success {
   display: flex;
   align-items: end;
   justify-content: end;
