@@ -9,6 +9,10 @@ import Modal from "react-modal";
 
 function Perfil() {
   const [modalEditarIsOpen, setModalEditarIsOpen] = useState(false);
+  const [emailModal, setEmailModal] = useState("");
+  const [firstNameModal, setFirstNameModal] = useState("");
+  const [lastNameModal, setLastNameModal] = useState("");
+  const [senhaModal, setSenhaModal] = useState("");
 
   const [formData, setFormData] = useState({
     email: "",
@@ -49,7 +53,7 @@ function Perfil() {
   const salvarAlteracoes = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/users/${formData.email}`,  // Substitua pela ID do usuário se necessário
+        `http://localhost:8080/users/${formData.email}`,
         formData,
         {
           withCredentials: true,
@@ -58,7 +62,7 @@ function Perfil() {
 
       if (response.status === 200) {
         alert("Perfil atualizado com sucesso!");
-        setModalEditarIsOpen(false);  // Fecha o modal após salvar
+        setModalEditarIsOpen(false);
       }
     } catch (error) {
       console.error("Erro ao salvar as alterações:", error);
@@ -127,7 +131,9 @@ function Perfil() {
             </div>
 
             <div className="button-container">
-              <button onClick={editarUsuario} className="save-button">Editar Perfil</button>
+              <button onClick={editarUsuario} className="save-button">
+                Editar Perfil
+              </button>
               <button className="cancel-button">Excluir Conta</button>
             </div>
           </div>
@@ -145,6 +151,18 @@ function Perfil() {
       >
         <div className="modal-container-editar">
 
+          <div className="group-edite-modal">
+            
+            <div className="group-input"></div>
+            <div className="group-input"></div>
+            <div className="group-input"></div>
+            <div className="group-input"></div>
+
+            <div className="div-btns-modal-editar">
+              <div className="btn-save-modal-editar">Salvar</div>
+              <div onClick={() => setModalEditarIsOpen(false)} className="btn-cancel-modal-editar">Cancelar</div>
+            </div>
+          </div>
         </div>
       </Modal>
     </div>
