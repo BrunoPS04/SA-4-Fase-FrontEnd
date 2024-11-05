@@ -82,7 +82,7 @@
   justify-content: center;
   height: 100%;
   width: 100%;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 
   span {
     font-size: 23px;
@@ -387,7 +387,7 @@ td {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  max-width: 950px;
+  max-width: 995px;
   height: 40vh;
   padding: 20px;
   border-radius: 8px;
@@ -503,13 +503,17 @@ td {
 
 .modal-btns {
   display: flex;
-  margin-top: 25px;
+  margin-top: 45px;
   gap: 10px;
 
   button {
-    height: 20px;
-    width: 100px;
-    font-size: 16px;
+    height: 32px;
+    width: 110px;
+    font-size: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #514e4e;
   }
 }
 

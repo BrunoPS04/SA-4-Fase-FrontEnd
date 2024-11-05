@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faFilePen } from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-modal";
+import axios from "axios";
 
 import "./index.css";
 
@@ -80,27 +81,28 @@ function Painel() {
     cat.toLowerCase().includes(categoriaModal.toLowerCase())
   );
 
-  const adicionarMovimentacao = () => {
-    if (
-      descricao == "" ||
-      valor == "" ||
-      tipo == "" ||
-      categoria == "" ||
-      data == ""
-    ) {
+  const adicionarMovimentacao = async () => {
+    if (descricao === "" || valor === "" || tipo === "" || categoria === "" || data === "") {
       setModalAlertCamposVazios(true);
     } else {
-      const novaMovimentacao = {
-        id: new Date().getTime(),
-        descricao,
-        valor: parseFloat(valor),
-        tipo,
-        categoria,
-        data,
-      };
-
-      setMovimentacoes([...movimentacoes, novaMovimentacao]);
-      resetarCampos();
+      try {
+        const novaMovimentacao = {
+          descricao,
+          valor: parseFloat(valor),
+          tipo,
+          categoria,
+          data,
+        };
+  
+        // Envia a nova movimentação para o backend
+        const response = await axios.post("http://localhost:8080/movimentacoes", novaMovimentacao);
+        
+        // Adiciona a nova movimentação à lista após confirmação do backend
+        setMovimentacoes([...movimentacoes, response.data]);
+        resetarCampos();
+      } catch (error) {
+        console.error("Erro ao adicionar movimentação:", error);
+      }
     }
   };
 
@@ -148,7 +150,7 @@ function Painel() {
 
   const corSaldo = saldoMesal <= 0 ? "#DB3A34" : "#2b8293";
 
-  const salvarMovimentacao = () => {
+  const salvarEdicaoMovimentacao = () => {
     const novasMovimentacoes = movimentacoes.map((movimentacao) => {
       if (movimentacao.id === movimentacaoEditando) {
         return {
@@ -446,7 +448,7 @@ function Painel() {
             </div>
           </div>
           <div className="modal-btns">
-            <button onClick={salvarMovimentacao}>Salvar</button>
+            <button onClick={salvarEdicaoMovimentacao}>Salvar</button>
             <button onClick={() => setModalIsOpenEdit(false)}>Cancelar</button>
           </div>
         </div>
