@@ -45,10 +45,11 @@ function CardLogin({ toggleForm }) {
       const response = await axios.post(
         "http://localhost:8080/users/login",
         formData,
-        { withCredentials: true }  // Certifique-se de enviar credenciais (cookies)
+        { withCredentials: true,  }  // Certifique-se de enviar credenciais (cookies)
       );
 
       if (response.status === 200) {
+        localStorage.setItem("userId",response.data.id);
         navigate("/home");
       }
     } catch (error) {

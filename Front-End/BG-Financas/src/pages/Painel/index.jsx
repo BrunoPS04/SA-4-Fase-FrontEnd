@@ -85,6 +85,9 @@ function Painel() {
     if (descricao === "" || valor === "" || tipo === "" || categoria === "" || data === "") {
       setModalAlertCamposVazios(true);
     } else {
+
+      const useId = Number(localStorage.getItem("userId"));
+
       try {
         const novaMovimentacao = {
           descricao,
@@ -92,6 +95,7 @@ function Painel() {
           tipo,
           categoria,
           data,
+          user_id: useId,
         };
   
         // Envia a nova movimentação para o backend
@@ -331,7 +335,7 @@ function Painel() {
                   <td>R$ {movimentacao.valor.toFixed(2)}</td>
                   <td>{formatarData(movimentacao.data)}</td>
                   <td>{movimentacao.tipo}</td>
-                  <td>{movimentacao.categoria}</td>
+                  <td>{movimentacao.categoria.nomeCategoria}</td>
 
                   <td className="td-acoes-btn">
                     <button onClick={() => editarMovimentacao(movimentacao)}>
