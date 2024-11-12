@@ -36,6 +36,23 @@ function Painel() {
   const [dataModal, setDataModal] = useState("");
   const [descricaoModal, setDescricaoModal] = useState("");
 
+  const userId = Number(localStorage.getItem("userId"));
+  console.log(userId);
+
+  useEffect(() => {
+    const fetchMovimentacoes = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/movimentacoes/user/${userId}`);
+        console.log(response.data);
+        setMovimentacoes(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar movimentações:", error);
+      }
+    };
+  
+    fetchMovimentacoes();
+  }, [userId]);  
+
   const calcularValores = () => {
     const receitaMesal = movimentacoes
       .filter((movimentacao) => movimentacao.tipo === "entrada")
@@ -86,8 +103,6 @@ function Painel() {
       setModalAlertCamposVazios(true);
     } else {
 
-      const useId = Number(localStorage.getItem("userId"));
-
       try {
         const novaMovimentacao = {
           descricao,
@@ -95,7 +110,7 @@ function Painel() {
           tipo,
           categoria,
           data,
-          user_id: useId,
+          user_id: userId,
         };
   
         // Envia a nova movimentação para o backend
