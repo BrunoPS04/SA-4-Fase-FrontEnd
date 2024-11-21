@@ -16,19 +16,25 @@ function Painel() {
   const [modalIsOpenEdit, setModalIsOpenEdit] = useState(false);
 
   const [modalAlertCamposVazios, setModalAlertCamposVazios] = useState(false);
-  const [modalAlertDeleteMovimentacao, setModalAlertDeleteMovimentacao] = useState(false);
+  const [modalAlertDeleteMovimentacao, setModalAlertDeleteMovimentacao] =
+    useState(false);
   const [idMovimentacaoExcluir, setIdMovimentacaoExcluir] = useState(null);
 
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/categorias");
+        setCategorias(response.data); // response.data agora será uma lista de strings.
+      } catch (error) {
+        console.error("Erro ao buscar categorias:", error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
+
   const [categoria, setCategoria] = useState("");
-  const [categorias, setCategorias] = useState([
-    "Alimentação",
-    "Transporte",
-    "Lazer",
-    "Saúde",
-    "Moradia",
-    "Bonificação",
-    "Educação",
-  ]);
+  const [categorias, setCategorias] = useState([]);
 
   const [categoriaModal, setCategoriaModal] = useState("");
   const [tipoModal, setTipoModal] = useState("");
@@ -42,16 +48,18 @@ function Painel() {
   useEffect(() => {
     const fetchMovimentacoes = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/movimentacoes/user/${userId}`);
+        const response = await axios.get(
+          `http://localhost:8080/movimentacoes/user/${userId}`
+        );
         console.log(response.data);
         setMovimentacoes(response.data);
       } catch (error) {
         console.error("Erro ao buscar movimentações:", error);
       }
     };
-  
+
     fetchMovimentacoes();
-  }, [userId]);  
+  }, [userId]);
 
   const calcularValores = () => {
     const receitaMesal = movimentacoes
@@ -75,18 +83,34 @@ function Painel() {
     setCategoriaModal(e.target.value);
   };
 
-  const adicionarNovaCategoria = () => {
+  const adicionarNovaCategoria = async () => {
     if (!categorias.includes(categoria)) {
-      setCategorias([...categorias, categoria]);
+      try {
+        // Envia a nova categoria para o backend
+        const response = await axios.post("http://localhost:8080/categorias", {
+          nomeCategoria: categoria,
+        });
+        // Adiciona a categoria salva no banco na lista de categorias
+        setCategorias([...categorias, response.data.nomeCategoria]);
+        setCategoria(""); // Limpa o campo após salvar
+      } catch (error) {
+        console.error("Erro ao criar nova categoria:", error);
+      }
     }
-    setCategoria("");
   };
 
-  const adicionarNovaCategoriaModal = () => {
+  const adicionarNovaCategoriaModal = async () => {
     if (!categorias.includes(categoriaModal)) {
-      setCategorias([...categorias, categoriaModal]);
+      try {
+        const response = await axios.post("http://localhost:8080/categorias", {
+          nomeCategoria: categoriaModal,
+        });
+        setCategorias([...categorias, response.data.nomeCategoria]);
+        setCategoriaModal("");
+      } catch (error) {
+        console.error("Erro ao criar nova categoria:", error);
+      }
     }
-    setCategoriaModal("");
   };
 
   // Filtra categorias que correspondem ao que está sendo digitado
@@ -99,10 +123,15 @@ function Painel() {
   );
 
   const adicionarMovimentacao = async () => {
-    if (descricao === "" || valor === "" || tipo === "" || categoria === "" || data === "") {
+    if (
+      descricao === "" ||
+      valor === "" ||
+      tipo === "" ||
+      categoria === "" ||
+      data === ""
+    ) {
       setModalAlertCamposVazios(true);
     } else {
-
       try {
         const novaMovimentacao = {
           descricao,
@@ -112,10 +141,13 @@ function Painel() {
           data,
           user_id: userId,
         };
-  
+
         // Envia a nova movimentação para o backend
-        const response = await axios.post("http://localhost:8080/movimentacoes", novaMovimentacao);
-        
+        const response = await axios.post(
+          "http://localhost:8080/movimentacoes",
+          novaMovimentacao
+        );
+
         // Adiciona a nova movimentação à lista após confirmação do backend
         setMovimentacoes([...movimentacoes, response.data]);
         resetarCampos();
@@ -143,7 +175,7 @@ function Painel() {
     setDescricaoModal(movimentacao.descricao);
     setValorModal(movimentacao.valor);
     setTipoModal(movimentacao.tipo);
-    setCategoriaModal(movimentacao.categoria);
+    setCategoriaModal(movimentacao.categoria.nomeCategoria);
     setDataModal(movimentacao.data);
     setMovimentacaoEditando(movimentacao.id);
     setModalIsOpenEdit(true);
@@ -154,12 +186,21 @@ function Painel() {
     setModalAlertDeleteMovimentacao(true);
   };
 
-  const confirmarExclusao = () => {
-    const novasMovimentacoes = movimentacoes.filter(
-      (movimentacao) => movimentacao.id !== idMovimentacaoExcluir
-    );
-    setMovimentacoes(novasMovimentacoes);
-    setModalAlertDeleteMovimentacao(false);
+  const confirmarExclusao = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:8080/movimentacoes/${idMovimentacaoExcluir}`
+      );
+
+      const novasMovimentacoes = movimentacoes.filter(
+        (movimentacao) => movimentacao.id !== idMovimentacaoExcluir
+      );
+      setMovimentacoes(novasMovimentacoes);
+
+      setModalAlertDeleteMovimentacao(false);
+    } catch (error) {
+      console.error("Erro ao excluir movimentação:", error);
+    }
   };
 
   const formatarData = (dataISO) => {
@@ -169,25 +210,42 @@ function Painel() {
 
   const corSaldo = saldoMesal <= 0 ? "#DB3A34" : "#2b8293";
 
-  const salvarEdicaoMovimentacao = () => {
-    const novasMovimentacoes = movimentacoes.map((movimentacao) => {
-      if (movimentacao.id === movimentacaoEditando) {
-        return {
-          ...movimentacao,
-          descricao: descricaoModal,
-          valor: parseFloat(valorModal),
-          tipo: tipoModal,
-          categoria: categoriaModal,
-          data: dataModal,
-        };
-      }
-      return movimentacao;
-    });
-
-    setMovimentacoes(novasMovimentacoes);
-    setModalIsOpenEdit(false);
-    resetarCampos();
+  const salvarEdicaoMovimentacao = async () => {
+    try {
+      // Cria o objeto com os dados atualizados
+      const movimentacaoAtualizada = {
+        descricao: descricaoModal,
+        valor: parseFloat(valorModal),
+        tipo: tipoModal,
+        categoria: categoriaModal,
+        data: dataModal,
+        user_id: userId,
+      };
+  
+      console.log("Movimentação atualizada:", movimentacaoAtualizada);
+  
+      // Envia a requisição para atualizar a movimentação no backend
+      await axios.put(
+        `http://localhost:8080/movimentacoes/${movimentacaoEditando}`,
+        movimentacaoAtualizada
+      );
+  
+      // Atualiza a lista de movimentações no frontend
+      const novasMovimentacoes = movimentacoes.map((movimentacao) => {
+        if (movimentacao.id === movimentacaoEditando) {
+          return { ...movimentacao, ...movimentacaoAtualizada };
+        }
+        return movimentacao;
+      });
+  
+      setMovimentacoes(novasMovimentacoes);  // Atualiza a tabela com os novos dados
+      setModalIsOpenEdit(false);
+      resetarCampos();
+    } catch (error) {
+      console.error("Erro ao salvar edição da movimentação:", error);
+    }
   };
+  
 
   return (
     <div className="painel-container">
@@ -353,7 +411,12 @@ function Painel() {
                   <td>{movimentacao.categoria.nomeCategoria}</td>
 
                   <td className="td-acoes-btn">
-                    <button onClick={() => editarMovimentacao(movimentacao)}>
+                    <button
+                      onClick={() => {
+                        console.log(movimentacao);
+                        editarMovimentacao(movimentacao);
+                      }}
+                    >
                       <FontAwesomeIcon className="icon-file" icon={faFilePen} />
                     </button>
 

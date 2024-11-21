@@ -45,23 +45,27 @@ function CardLogin({ toggleForm }) {
       const response = await axios.post(
         "http://localhost:8080/users/login",
         formData,
-        { withCredentials: true,  }  // Certifique-se de enviar credenciais (cookies)
+        { withCredentials: true } // Certifique-se de enviar credenciais (cookies)
       );
 
       if (response.status === 200) {
-        localStorage.setItem("userId",response.data.id);
+        localStorage.setItem("userId", response.data.id);
         navigate("/home");
       }
     } catch (error) {
       if (error.response) {
         if (error.response.status === 401) {
+          console.log(error.response.status)
           setErrorMessage("Email ou senha incorretos.");
         } else if (error.response.status === 404) {
+          console.log(error.response.status)
           setErrorMessage("Usuário não encontrado.");
         } else {
+          console.log(error.response.status)
           setErrorMessage("Erro desconhecido ao fazer login. Tente novamente.");
         }
       } else {
+        console.log(error.response.status)
         setErrorMessage("Erro de conexão com o servidor. Tente novamente.");
       }
       setModalLoginIsOpen(true);
@@ -89,7 +93,9 @@ function CardLogin({ toggleForm }) {
           onChange={handleChange}
         />
       </div>
-      <button onClick={handleLogin} className="btn-login">Login</button>
+      <button onClick={handleLogin} className="btn-login">
+        Login
+      </button>
       <label onClick={toggleForm} className="label-cadastro">
         Não possui cadastro? Cadastre-se aqui
       </label>
@@ -101,9 +107,13 @@ function CardLogin({ toggleForm }) {
         className="modal-login"
       >
         <div className="modal-content-login">
-          <h2>Error ao relizar Login</h2>
-          <p>{errorMenssage}</p>
-          <button onClick={() => setModalLoginIsOpen(false)}>Ok</button>
+          <div className="modal-div-content-login">
+            <h2>Error ao relizar Login</h2>
+            <p>{errorMenssage}</p>
+            <div className="modal-btn-content-login">
+              <button onClick={() => setModalLoginIsOpen(false)}>Ok</button>
+            </div>
+          </div>
         </div>
       </Modal>
     </div>
