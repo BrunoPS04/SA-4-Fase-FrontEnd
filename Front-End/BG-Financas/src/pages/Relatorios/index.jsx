@@ -1,49 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan, faFilePen } from "@fortawesome/free-solid-svg-icons";
+import Modal from "react-modal";
+import axios from "axios";
 import "./index.css";
 
 function Relatorios() {
-  const [activeTab, setActiveTab] = useState("movimentacao");
-
-  const [descricao, setDescricao] = useState("");
-  const [valor, setValor] = useState("");
-  const [tipo, setTipo] = useState("");
-  const [data, setData] = useState("");
   const [movimentacoes, setMovimentacoes] = useState([]);
-
+  const [movimentacoesFiltradas, setMovimentacoesFiltradas] = useState([]);
+  const [categoriasFiltradas, setCategoriasFiltradas] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("");
+  const [activeTab, setActiveTab] = useState("movimentacao");
   const [categoria, setCategoria] = useState("");
-  const [categorias, setCategorias] = useState([
-    "Alimentação",
-    "Transporte",
-    "Lazer",
-    "Saúde",
-    "Moradia",
-    "Bonificação",
-    "Educação",
-  ]);
+  const [categorias, setCategorias] = useState([]);
+
+  const userId = Number(localStorage.getItem("userId"));
+  console.log("Usuário: " + userId);
+
+  // Mover a função para fora do useEffect
+  const atualizarMovimentacoes = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/movimentacoes/user/${userId}`
+      );
+      setMovimentacoes(response.data);
+      setMovimentacoesFiltradas(response.data); // Inicialmente, exibe todas as movimentações
+    } catch (error) {
+      console.error("Erro ao atualizar movimentações:", error);
+    }
+  };
+
+  useEffect(() => {
+    atualizarMovimentacoes();
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/categorias");
+        setCategorias(response.data); // response.data agora será uma lista de strings.
+      } catch (error) {
+        console.error("Erro ao buscar categorias:", error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
 
   const categoriaEscolhida = (e) => {
-    setCategoria(e.target.value);
-  };
-
-  const adicionarNovaCategoria = () => {
-    if (!categorias.includes(categoria)) {
-      setCategorias([...categorias, categoria]);
-    }
-    setCategoria("");
-  };
-
-  // Filtra categorias que correspondem ao que está sendo digitado
-  const categoriasFiltradas = categorias.filter((cat) =>
-    cat.toLowerCase().includes(categoria.toLowerCase())
-  );
-
-  const editarMovimentacao = () => {};
-
-  const excluirMovimentacao = (id) => {
-    const novasMovimentacoes = movimentacoes.filter(
-      (movimentacao) => movimentacao.id !== id
+    const valor = e.target.value;
+    setCategoria(valor);
+    const filtradas = categorias.filter((cat) =>
+      cat.toLowerCase().includes(valor.toLowerCase())
     );
-    setMovimentacoes(novasMovimentacoes);
+    setCategoriasFiltradas(filtradas);
+  };
+
+  const comfirmaFiltro = () => {
+    const filtradas = movimentacoes.filter((movimentacao) =>
+      movimentacao.categoria.nomeCategoria
+        .toLowerCase()
+        .includes(categoria.toLowerCase())
+    );
+    setMovimentacoesFiltradas(filtradas);
+    setCategoriasFiltradas('')
+    setCategoria('')
+
+
+    
   };
 
   const formatarData = (dataISO) => {
@@ -54,36 +79,70 @@ function Relatorios() {
   return (
     <div className="container-relatorios">
       <div className="body-relatorios">
+        {showModal && (
+          <div className="modal">
+            <div className="modal-content">
+              <div className="headerModalTtl">
+                <div className="voltaTitulo">
+                  <label className="escritoBar">Período</label>
+                </div>
+              </div>
+              <div className="mainModalPeriodo">
+                <div className="inputsDateEsquerda">
+                  <label className="EscritoLabelPreto">Data Inicial</label>
+                  <input type="date" className="inputDatePeriodo" />
+                  <button className="close-button">Cancelar</button>
+                </div>
+                <div className="meioModalPeriodo">
+                  <label>Até</label>
+                </div>
+                <div className="inputsDateDireita">
+                  <label>Data final</label>
+                  <input type="date" className="inputDatePeriodo" />
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="close-button"
+                  >
+                    Aplicar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="filtros">
           <div className="header-filtros">
             <h2 className="h2Filtros">
-              <u>Filtro</u>
+              <u>Filtros</u>
             </h2>
           </div>
           <div className="body-filtros">
             {/* <div className="escolhas">
-                            <label className='ttlSelecao'>Gráfico:</label>
-                            <select name="slcGrafico" id="slcGrafico" className="slcPrincipais" onChange={handleGraficoChange}>
-                                <option value=""></option>
-                                <option value="pizza">Pizza</option>
-                                <option value="colunas">Colunas</option>
-                            </select>
-                        </div> */}
+                          <label className='ttlSelecao'>Gráfico:</label>
+                          <select name="slcGrafico" id="slcGrafico" className="slcPrincipais" onChange={handleGraficoChange}>
+                              <option value=""></option>
+                              <option value="pizza">Pizza</option>
+                              <option value="colunas">Colunas</option>
+                          </select>
+                      </div> */}
             <div className="escolhas">
-              <label className="ttlSelecao">Mês:</label>
-              <select name="slcDias" id="slcDias" className="slcPrincipais">
-                <option value="Janeiro">Janeiro</option>
-                <option value="Fevereiro">Fevereiro</option>
-                <option value="Março">Março</option>
-                <option value="Abril">Abril</option>
-                <option value="Maio">Maio</option>
-                <option value="Junho">Junho</option>
-                <option value="Julho">Julho</option>
-                <option value="Agosto">Agosto</option>
-                <option value="Setembro">Setembro</option>
-                <option value="Outubro">Outubro</option>
-                <option value="Novembro">Novembro</option>
-                <option value="Dezembro">Dezembro</option>
+              <label className="ttlSelecao">Periodo:</label>
+              <select
+                name="slcDias"
+                id="slcDias"
+                className="slcPrincipais"
+                value={selectedValue}
+                onChange={(e) => setSelectedValue(e.target.value)}
+              >
+                <option value=""></option>
+                <option value="1">Hoje</option>
+                <option value="7">Esta semana</option>
+                <option value="15">Este mês</option>
+                <option value="365">Este ano</option>
+                <option value="30">Últimos 30 dias</option>
+                <option value="12">Últimos 12 meses</option>
+                <option value="0">Todo o período</option>
+                <option value="123">Período personalizado</option>
               </select>
             </div>
             <div className="opcao-categoria-relatorios">
@@ -97,29 +156,36 @@ function Relatorios() {
                 maxLength={30}
               />
 
-              {categoria && (
+              {categoriasFiltradas.length > 0 && (
                 <ul className="sugestoes-categorias">
-                  {categoriasFiltradas.length > 0 ? (
-                    categoriasFiltradas.map((cat, index) => (
-                      <li key={index} onClick={() => setCategoria(cat)}>
-                        {cat}
-                      </li>
-                    ))
-                  ) : (
-                    <div
-                      className="nova-categoria"
-                      onClick={adicionarNovaCategoria}
-                    >
-                      <button className="btn-nova-categoria">
-                        Criar categoria: "{categoria}"
-                      </button>
-                    </div>
-                  )}
+                  {categoriasFiltradas.map((cat, index) => (
+                    <li key={index} onClick={() => setCategoria(cat)}>
+                      {cat}
+                    </li>
+                  ))}
                 </ul>
               )}
+              <div
+                className={`mostrar-seletor-grafico ${
+                  activeTab === "grafico" ? "mostrar" : ""
+                }`}
+              >
+                <label className="ttlSelecao">Gráfico:</label>
+                <select
+                  name="slcGraficoRelatorios"
+                  id="slcGraficoRelatorios"
+                  className="slcPrincipais"
+                >
+                  <option value=""></option>
+                  <option value="coluna">Coluna</option>
+                  <option value="pizza">Pizza</option>
+                </select>
+              </div>
             </div>
             <div className="baixo-left">
-              <button className="btnConfirm">Confirmar</button>
+              <button className="btnConfirm" onClick={comfirmaFiltro}>
+                Confirmar
+              </button>
             </div>
           </div>
         </div>
@@ -132,6 +198,14 @@ function Relatorios() {
               onClick={() => setActiveTab("movimentacao")}
             >
               Movimentação
+            </button>
+            <button
+              className={`btnEscolhaReal ${
+                activeTab === "grafico" ? "active" : ""
+              }`}
+              onClick={() => setActiveTab("grafico")}
+            >
+              Gráfico
             </button>
           </div>
 
@@ -150,27 +224,39 @@ function Relatorios() {
                         <th>Data</th>
                         <th>Tipo</th>
                         <th>Categoria</th>
-                        <th>Ações</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {movimentacoes.slice().map((movimentacao) => (
+                      {movimentacoesFiltradas.map((movimentacao) => (
                         <tr key={movimentacao.id}>
                           <td>{movimentacao.descricao}</td>
                           <td>R$ {movimentacao.valor.toFixed(2)}</td>
                           <td>{formatarData(movimentacao.data)}</td>
                           <td>{movimentacao.tipo}</td>
-                          <td>{movimentacao.categoria}</td>
+                          <td>{movimentacao.categoria.nomeCategoria}</td>
+
                           <td className="td-acoes-btn">
-                            <button onClick={editarMovimentacao}>
-                              <img src="./images/editar.svg" alt="Editar" />
+                            <button
+                              onClick={() => {
+                                console.log(movimentacao);
+                                editarMovimentacao(movimentacao);
+                              }}
+                            >
+                              <FontAwesomeIcon
+                                className="icon-file"
+                                icon={faFilePen}
+                              />
                             </button>
+
                             <button
                               onClick={() =>
                                 excluirMovimentacao(movimentacao.id)
                               }
                             >
-                              <img src="./images/lixeira.svg" alt="Excluir" />
+                              <FontAwesomeIcon
+                                className="icon-trash"
+                                icon={faTrashCan}
+                              />
                             </button>
                           </td>
                         </tr>
@@ -179,6 +265,14 @@ function Relatorios() {
                   </table>
                 </div>
               </div>
+            </div>
+          )}
+          {activeTab === "grafico" && (
+            <div className="main-grafico">
+              <div className="div-label-movimentacoes">
+                <label>Dados no Gráfico</label>
+              </div>
+              {exibirGrafico && renderGrafico()}
             </div>
           )}
         </div>

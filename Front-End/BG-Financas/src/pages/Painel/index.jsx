@@ -43,23 +43,20 @@ function Painel() {
   const [descricaoModal, setDescricaoModal] = useState("");
 
   const userId = Number(localStorage.getItem("userId"));
-  console.log(userId);
+  console.log('Usuário: ' + userId);
+
+  const atualizarMovimentacoes = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/movimentacoes/user/${userId}`);
+      setMovimentacoes(response.data);
+    } catch (error) {
+      console.error("Erro ao atualizar movimentações:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchMovimentacoes = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/movimentacoes/user/${userId}`
-        );
-        console.log(response.data);
-        setMovimentacoes(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar movimentações:", error);
-      }
-    };
-
-    fetchMovimentacoes();
-  }, [userId]);
+    atualizarMovimentacoes();
+  }, [userId]);  
 
   const calcularValores = () => {
     const receitaMesal = movimentacoes
@@ -119,17 +116,11 @@ function Painel() {
   );
 
   const categoriasFiltradasModal = categorias.filter((cat) =>
-    cat.toLowerCase().includes(categoriaModal.toLowerCase())
+    cat.toLowerCase().includes(categoria.toLowerCase())
   );
 
   const adicionarMovimentacao = async () => {
-    if (
-      descricao === "" ||
-      valor === "" ||
-      tipo === "" ||
-      categoria === "" ||
-      data === ""
-    ) {
+    if (descricao === "" || valor === "" || tipo === "" || categoria === "" || data === "") {
       setModalAlertCamposVazios(true);
     } else {
       try {
@@ -141,21 +132,18 @@ function Painel() {
           data,
           user_id: userId,
         };
-
-        // Envia a nova movimentação para o backend
-        const response = await axios.post(
-          "http://localhost:8080/movimentacoes",
-          novaMovimentacao
-        );
-
-        // Adiciona a nova movimentação à lista após confirmação do backend
-        setMovimentacoes([...movimentacoes, response.data]);
+  
+        await axios.post("http://localhost:8080/movimentacoes", novaMovimentacao);
+  
+        // Atualiza a lista após adicionar
+        await atualizarMovimentacoes();
         resetarCampos();
       } catch (error) {
         console.error("Erro ao adicionar movimentação:", error);
       }
     }
   };
+  
 
   const resetarCampos = () => {
     setDescricao("");
@@ -188,20 +176,16 @@ function Painel() {
 
   const confirmarExclusao = async () => {
     try {
-      await axios.delete(
-        `http://localhost:8080/movimentacoes/${idMovimentacaoExcluir}`
-      );
-
-      const novasMovimentacoes = movimentacoes.filter(
-        (movimentacao) => movimentacao.id !== idMovimentacaoExcluir
-      );
-      setMovimentacoes(novasMovimentacoes);
-
+      await axios.delete(`http://localhost:8080/movimentacoes/${idMovimentacaoExcluir}`);
+  
+      // Atualiza a lista após excluir
+      await atualizarMovimentacoes();
       setModalAlertDeleteMovimentacao(false);
     } catch (error) {
       console.error("Erro ao excluir movimentação:", error);
     }
   };
+  
 
   const formatarData = (dataISO) => {
     const [ano, mes, dia] = dataISO.split("-");
@@ -212,7 +196,6 @@ function Painel() {
 
   const salvarEdicaoMovimentacao = async () => {
     try {
-      // Cria o objeto com os dados atualizados
       const movimentacaoAtualizada = {
         descricao: descricaoModal,
         valor: parseFloat(valorModal),
@@ -222,23 +205,10 @@ function Painel() {
         user_id: userId,
       };
   
-      console.log("Movimentação atualizada:", movimentacaoAtualizada);
+      await axios.put(`http://localhost:8080/movimentacoes/${movimentacaoEditando}`, movimentacaoAtualizada);
   
-      // Envia a requisição para atualizar a movimentação no backend
-      await axios.put(
-        `http://localhost:8080/movimentacoes/${movimentacaoEditando}`,
-        movimentacaoAtualizada
-      );
-  
-      // Atualiza a lista de movimentações no frontend
-      const novasMovimentacoes = movimentacoes.map((movimentacao) => {
-        if (movimentacao.id === movimentacaoEditando) {
-          return { ...movimentacao, ...movimentacaoAtualizada };
-        }
-        return movimentacao;
-      });
-  
-      setMovimentacoes(novasMovimentacoes);  // Atualiza a tabela com os novos dados
+      // Atualiza a lista após editar
+      await atualizarMovimentacoes();
       setModalIsOpenEdit(false);
       resetarCampos();
     } catch (error) {
@@ -246,7 +216,6 @@ function Painel() {
     }
   };
   
-
   return (
     <div className="painel-container">
       <div className="painel">
