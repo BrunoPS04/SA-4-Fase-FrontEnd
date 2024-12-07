@@ -56,21 +56,41 @@ function Painel() {
 
   useEffect(() => {
     atualizarMovimentacoes();
-  }, [userId]);  
+  }, [userId]);
 
+  const [valoresMensais, setValoresMensais] = useState({
+    receitaMensal: 0,
+    despesaMensal: 0,
+    saldoMensal: 0,
+  });
+
+  // Função para calcular valores com base em movimentações até a data atual
   const calcularValores = () => {
-    const receitaMesal = movimentacoes
-      .filter((movimentacao) => movimentacao.tipo === "entrada")
-      .reduce((total, movimentacao) => total + movimentacao.valor, 0);
-    const despesaMesal = movimentacoes
-      .filter((movimentacao) => movimentacao.tipo === "saida")
-      .reduce((total, movimentacao) => total + movimentacao.valor, 0);
-    const saldoMesal = receitaMesal - despesaMesal;
+    const hoje = new Date().toISOString().split("T")[0];
 
-    return { receitaMesal, despesaMesal, saldoMesal };
+    const receitaMensal = movimentacoes
+      .filter(
+        (movimentacao) =>
+          movimentacao.tipo === "entrada" && movimentacao.data <= hoje
+      )
+      .reduce((total, movimentacao) => total + movimentacao.valor, 0);
+
+    const despesaMensal = movimentacoes
+      .filter(
+        (movimentacao) =>
+          movimentacao.tipo === "saida" && movimentacao.data <= hoje
+      )
+      .reduce((total, movimentacao) => total + movimentacao.valor, 0);
+
+    const saldoMensal = receitaMensal - despesaMensal;
+
+    return { receitaMensal, despesaMensal, saldoMensal };
   };
 
-  const { receitaMesal, despesaMesal, saldoMesal } = calcularValores();
+  // Atualiza os valores mensais sempre que as movimentações mudam
+  useEffect(() => {
+    setValoresMensais(calcularValores());
+  }, [movimentacoes]);
 
   const categoriaEscolhida = (e) => {
     setCategoria(e.target.value);
@@ -132,9 +152,9 @@ function Painel() {
           data,
           user_id: userId,
         };
-  
+
         await axios.post("http://localhost:8080/movimentacoes", novaMovimentacao);
-  
+
         // Atualiza a lista após adicionar
         await atualizarMovimentacoes();
         resetarCampos();
@@ -143,7 +163,7 @@ function Painel() {
       }
     }
   };
-  
+
 
   const resetarCampos = () => {
     setDescricao("");
@@ -177,7 +197,7 @@ function Painel() {
   const confirmarExclusao = async () => {
     try {
       await axios.delete(`http://localhost:8080/movimentacoes/${idMovimentacaoExcluir}`);
-  
+
       // Atualiza a lista após excluir
       await atualizarMovimentacoes();
       setModalAlertDeleteMovimentacao(false);
@@ -185,14 +205,14 @@ function Painel() {
       console.error("Erro ao excluir movimentação:", error);
     }
   };
-  
+
 
   const formatarData = (dataISO) => {
     const [ano, mes, dia] = dataISO.split("-");
     return `${dia}-${mes}-${ano}`;
   };
 
-  const corSaldo = saldoMesal <= 0 ? "#DB3A34" : "#2b8293";
+  const corSaldo = valoresMensais.saldoMensal <= 0 ? "#DB3A34" : "#2b8293";
 
   const salvarEdicaoMovimentacao = async () => {
     try {
@@ -204,9 +224,9 @@ function Painel() {
         data: dataModal,
         user_id: userId,
       };
-  
+
       await axios.put(`http://localhost:8080/movimentacoes/${movimentacaoEditando}`, movimentacaoAtualizada);
-  
+
       // Atualiza a lista após editar
       await atualizarMovimentacoes();
       setModalIsOpenEdit(false);
@@ -215,7 +235,7 @@ function Painel() {
       console.error("Erro ao salvar edição da movimentação:", error);
     }
   };
-  
+
   return (
     <div className="painel-container">
       <div className="painel">
@@ -225,7 +245,7 @@ function Painel() {
           </div>
 
           <div className="div-valor-renda-mensal">
-            <span>+R$ {receitaMesal.toFixed(2)}</span>
+            <span>+R$ {valoresMensais.receitaMensal.toFixed(2)}</span>
           </div>
         </div>
 
@@ -235,7 +255,7 @@ function Painel() {
           </div>
 
           <div className="div-valor-despesa-mensal">
-            <span>-R$ {despesaMesal.toFixed(2)}</span>
+            <span>-R$ {valoresMensais.despesaMensal.toFixed(2)}</span>
           </div>
         </div>
 
@@ -245,7 +265,7 @@ function Painel() {
           </div>
 
           <div className="div-valor-saldo">
-            <span style={{ color: corSaldo }}>R$ {saldoMesal.toFixed(2)}</span>
+            <span style={{ color: corSaldo }}>R$ {valoresMensais.saldoMensal.toFixed(2)}</span>
           </div>
         </div>
       </div>
@@ -302,7 +322,7 @@ function Painel() {
         </div>
 
         <div className="opcao-data">
-          <label>Data de laçamento</label>
+          <label>Data de Pagamento</label>
 
           <input
             className="inpt-data"
@@ -363,7 +383,7 @@ function Painel() {
               <tr>
                 <th>Descrição</th>
                 <th>Valor</th>
-                <th>Data</th>
+                <th>Data de Pagamento</th>
                 <th>Tipo</th>
                 <th>Categoria</th>
                 <th>Ações</th>

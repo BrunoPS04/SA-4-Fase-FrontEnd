@@ -67,9 +67,24 @@ function Relatorios() {
     setCategoriasFiltradas('')
     setCategoria('')
 
-
-    
   };
+
+  const handleSelectChange = (event) => {
+    const value = event.target.value;
+    setSelectedValue(value);
+
+    // Verifica se o valor é "123" (Período personalizado)
+    if (value === '123') {
+      setShowModal(true); // Exibe o modal
+    } else {
+      setShowModal(false); // Oculta o modal
+    }
+  };
+
+ const cancelaPeridoPersonalizado = () => {
+    setShowModal(false);
+    setSelectedValue("");
+ }
 
   const formatarData = (dataISO) => {
     const [ano, mes, dia] = dataISO.split("-");
@@ -91,7 +106,7 @@ function Relatorios() {
                 <div className="inputsDateEsquerda">
                   <label className="EscritoLabelPreto">Data Inicial</label>
                   <input type="date" className="inputDatePeriodo" />
-                  <button className="close-button">Cancelar</button>
+                  <button className="close-button" onClick={cancelaPeridoPersonalizado}>Cancelar</button>
                 </div>
                 <div className="meioModalPeriodo">
                   <label>Até</label>
@@ -132,7 +147,7 @@ function Relatorios() {
                 id="slcDias"
                 className="slcPrincipais"
                 value={selectedValue}
-                onChange={(e) => setSelectedValue(e.target.value)}
+                onChange={handleSelectChange}
               >
                 <option value=""></option>
                 <option value="1">Hoje</option>
@@ -166,9 +181,8 @@ function Relatorios() {
                 </ul>
               )}
               <div
-                className={`mostrar-seletor-grafico ${
-                  activeTab === "grafico" ? "mostrar" : ""
-                }`}
+                className={`mostrar-seletor-grafico ${activeTab === "grafico" ? "mostrar" : ""
+                  }`}
               >
                 <label className="ttlSelecao">Gráfico:</label>
                 <select
@@ -192,17 +206,15 @@ function Relatorios() {
         <div className="body-right">
           <div className="body-header">
             <button
-              className={`btnEscolhaReal ${
-                activeTab === "movimentacao" ? "active" : ""
-              }`}
+              className={`btnEscolhaReal ${activeTab === "movimentacao" ? "active" : ""
+                }`}
               onClick={() => setActiveTab("movimentacao")}
             >
               Movimentação
             </button>
             <button
-              className={`btnEscolhaReal ${
-                activeTab === "grafico" ? "active" : ""
-              }`}
+              className={`btnEscolhaReal ${activeTab === "grafico" ? "active" : ""
+                }`}
               onClick={() => setActiveTab("grafico")}
             >
               Gráfico
@@ -221,7 +233,7 @@ function Relatorios() {
                       <tr>
                         <th>Descrição</th>
                         <th>Valor</th>
-                        <th>Data</th>
+                        <th>Data de Pagamento</th>
                         <th>Tipo</th>
                         <th>Categoria</th>
                       </tr>

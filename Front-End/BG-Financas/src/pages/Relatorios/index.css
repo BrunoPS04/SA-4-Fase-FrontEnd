@@ -212,3 +212,86 @@
   box-shadow: 3px 0px 15px 0px #00000025;
   transition: all 0.3s ease-in-out;
 }
+
+.modal {
+  display: block; 
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.modal-content {
+  background-color: white;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid #888;
+  width: 30%; 
+}
+
+.headerModalTtl {
+  height: 30px;
+  background-color: #2b9348;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mainModalPeriodo {
+  padding-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.EscritoLabelPreto {
+  color: #000;
+}
+
+.close-button {
+  background-color:#2b9348;
+  color: #fff;
+  font-weight: bold;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  width: 80px;
+  border-radius: 5px;
+  height: 20px;
+  border: none;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: #2b9348;
+  background-color: #83df9d;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.inputsDateEsquerda {
+  width: 150px;
+}
+
+.meioModalPeriodo {
+  width: 50px;
+}
+
+.inputsDateDireita {
+  width: 150px;
+}
+
+.inputDatePeriodo {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  width: 120px;
+  border-radius: 5px;
+  height: 30px;
+  border: solid 1px #000;
+  cursor: pointer;
+}
+
