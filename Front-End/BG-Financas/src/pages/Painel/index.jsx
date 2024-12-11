@@ -391,7 +391,7 @@ function Painel() {
             </thead>
 
             <tbody>
-              {movimentacoes.slice(-10).map((movimentacao) => (
+              {movimentacoes.slice(-9).map((movimentacao) => (
                 <tr key={movimentacao.id}>
                   <td>{movimentacao.descricao}</td>
                   <td>R$ {movimentacao.valor.toFixed(2)}</td>
